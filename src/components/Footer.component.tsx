@@ -13,7 +13,7 @@ function Footer() {
           <h2>Your complete web solution</h2>
           <div className="social_icon">
             {footerSocialItems.map((item: IFooterScialItem) => (
-              <div className="social_item">
+              <div key={item.id} className="social_item">
                 <a href={item.link}>
                   <img alt="" width={10} height={10} src={item.icon} />
                 </a>
