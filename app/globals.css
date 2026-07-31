@@ -1,0 +1,101 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root,
+:root[data-theme="dark"] {
+  --color-graphite: 11 14 20;
+  --color-panel: 18 22 31;
+  --color-panel2: 23 28 39;
+  --color-line: 35 42 56;
+  --color-ink: 231 233 238;
+  --color-muted: 138 147 166;
+  --color-amber: 232 163 61;
+  --color-amberDim: 138 100 35;
+  --color-teal: 79 209 197;
+  --color-danger: 224 108 90;
+}
+
+:root[data-theme="light"] {
+  --color-graphite: 246 247 250;
+  --color-panel: 255 255 255;
+  --color-panel2: 238 240 245;
+  --color-line: 222 225 234;
+  --color-ink: 20 23 31;
+  --color-muted: 86 91 107;
+  --color-amber: 184 101 14;
+  --color-amberDim: 231 185 138;
+  --color-teal: 13 133 119;
+  --color-danger: 194 59 40;
+}
+
+:root[data-theme="gradient"] {
+  --color-graphite: 26 16 51;
+  --color-panel: 37 26 66;
+  --color-panel2: 47 33 83;
+  --color-line: 92 74 140;
+  --color-ink: 255 255 255;
+  --color-muted: 201 190 232;
+  --color-amber: 255 95 162;
+  --color-amberDim: 178 62 117;
+  --color-teal: 78 161 255;
+  --color-danger: 255 107 107;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  background-color: rgb(var(--color-graphite));
+  color: rgb(var(--color-ink));
+  transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+html[data-theme="gradient"] body {
+  background-image: linear-gradient(135deg, #ff5fa2 0%, #8b5cf6 48%, #4ea1ff 100%);
+  background-attachment: fixed;
+  background-size: cover;
+  text-shadow: 0 1px 10px rgba(15, 8, 35, 0.4);
+}
+
+::selection {
+  background: rgb(var(--color-amber));
+  color: rgb(var(--color-graphite));
+}
+
+.eyebrow {
+  font-family: var(--font-mono);
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  font-size: 0.72rem;
+  color: rgb(var(--color-teal));
+}
+
+.section-pad {
+  padding-top: 5.5rem;
+  padding-bottom: 5.5rem;
+}
+
+.divider {
+  height: 1px;
+  background: linear-gradient(90deg, transparent, rgb(var(--color-line)) 20%, rgb(var(--color-line)) 80%, transparent);
+}
+
+/* Visible keyboard focus */
+a:focus-visible,
+button:focus-visible,
+input:focus-visible,
+textarea:focus-visible {
+  outline: 2px solid rgb(var(--color-teal));
+  outline-offset: 3px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  * {
+    animation-duration: 0.001ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.001ms !important;
+    scroll-behavior: auto !important;
+  }
+}
