@@ -1,5 +1,5 @@
-import { Github, Linkedin, Mail, Phone, Download } from "lucide-react";
-import { profile } from "@/lib/data";
+import { Github, Linkedin, Mail, Phone, Download } from "lucide-react"
+import { profile } from "@/lib/data"
 
 export default function Footer() {
   return (
@@ -12,12 +12,6 @@ export default function Footer() {
           </div>
         </div>
         <div className="flex flex-wrap gap-4 text-sm">
-          <a href={`mailto:${profile.email}`} className="flex items-center gap-1.5 text-muted hover:text-accent">
-            <Mail size={15} /> Email
-          </a>
-          <a href={`tel:${profile.phone}`} className="flex items-center gap-1.5 text-muted hover:text-accent">
-            <Phone size={15} /> Call
-          </a>
           <a href={profile.github} target="_blank" rel="noopener noreferrer" className="flex items-center gap-1.5 text-muted hover:text-accent">
             <Github size={15} /> GitHub
           </a>
@@ -33,5 +27,5 @@ export default function Footer() {
         © {new Date().getFullYear()} {profile.name}. Built with Next.js.
       </div>
     </footer>
-  );
+  )
 }

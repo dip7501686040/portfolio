@@ -1,26 +1,26 @@
-"use client";
+"use client"
 
-import { useState } from "react";
-import { useSession, signIn, signOut } from "next-auth/react";
-import { Send, LogOut } from "lucide-react";
-import GoogleIcon from "./icons/GoogleIcon";
+import { useState } from "react"
+import { useSession, signIn, signOut } from "next-auth/react"
+import { Send, LogOut, Mail } from "lucide-react"
+import GoogleIcon from "./icons/GoogleIcon"
 
-type Status = "idle" | "sending" | "sent" | "error";
+type Status = "idle" | "sending" | "sent" | "error"
 
 export default function Contact() {
-  const { data: session, status: sessionStatus } = useSession();
-  const [form, setForm] = useState({ name: "", email: "", message: "", honeypot: "" });
-  const [status, setStatus] = useState<Status>("idle");
-  const [errorMsg, setErrorMsg] = useState("");
+  const { data: session, status: sessionStatus } = useSession()
+  const [form, setForm] = useState({ name: "", email: "", message: "", honeypot: "" })
+  const [status, setStatus] = useState<Status>("idle")
+  const [errorMsg, setErrorMsg] = useState("")
 
   // Pre-fill name/email once signed in with Google, without overwriting edits.
-  const displayName = form.name || session?.user?.name || "";
-  const displayEmail = form.email || session?.user?.email || "";
+  const displayName = form.name || session?.user?.name || ""
+  const displayEmail = form.email || session?.user?.email || ""
 
   async function handleSubmit(e: React.FormEvent) {
-    e.preventDefault();
-    setStatus("sending");
-    setErrorMsg("");
+    e.preventDefault()
+    setStatus("sending")
+    setErrorMsg("")
     try {
       const res = await fetch("/api/contact", {
         method: "POST",
@@ -31,16 +31,16 @@ export default function Contact() {
           message: form.message,
           honeypot: form.honeypot
         })
-      });
-      const data = await res.json();
+      })
+      const data = await res.json()
       if (!res.ok || !data.ok) {
-        throw new Error(data.error ?? "Something went wrong.");
+        throw new Error(data.error ?? "Something went wrong.")
       }
-      setStatus("sent");
-      setForm({ name: "", email: "", message: "", honeypot: "" });
+      setStatus("sent")
+      setForm({ name: "", email: "", message: "", honeypot: "" })
     } catch (err) {
-      setStatus("error");
-      setErrorMsg(err instanceof Error ? err.message : "Something went wrong.");
+      setStatus("error")
+      setErrorMsg(err instanceof Error ? err.message : "Something went wrong.")
     }
   }
 
@@ -51,9 +51,10 @@ export default function Contact() {
           <div className="eyebrow pt-1">contact</div>
           <div className="max-w-xl">
             <h2 className="font-display text-2xl sm:text-3xl text-ink mb-2">Leave a message</h2>
-            <p className="text-muted mb-6">
-              Have a project in mind? Sign in with Google to auto-fill your
-              details, or just fill the form directly.
+            <p className="text-muted mb-3">Have a project in mind? Sign in with Google to auto-fill your details, or just fill the form directly.</p>
+            <p className="flex items-center gap-1.5 text-xs text-muted mb-6">
+              <Mail size={13} />
+              Sends straight to my inbox — I&apos;ll reply by email, usually within a day.
             </p>
 
             {sessionStatus === "authenticated" ? (
@@ -66,11 +67,7 @@ export default function Contact() {
                   <div className="text-ink">{session.user?.name}</div>
                   <div className="text-muted">{session.user?.email}</div>
                 </div>
-                <button
-                  type="button"
-                  onClick={() => signOut()}
-                  className="inline-flex items-center gap-1 text-xs text-muted hover:text-danger"
-                >
+                <button type="button" onClick={() => signOut()} className="inline-flex items-center gap-1 text-xs text-muted hover:text-danger">
                   <LogOut size={14} /> Sign out
                 </button>
               </div>
@@ -87,16 +84,7 @@ export default function Contact() {
 
             <form onSubmit={handleSubmit} className="space-y-4">
               {/* Honeypot field — hidden from real users, catches simple bots */}
-              <input
-                type="text"
-                name="company"
-                value={form.honeypot}
-                onChange={(e) => setForm({ ...form, honeypot: e.target.value })}
-                className="hidden"
-                tabIndex={-1}
-                autoComplete="off"
-                aria-hidden="true"
-              />
+              <input type="text" name="company" value={form.honeypot} onChange={(e) => setForm({ ...form, honeypot: e.target.value })} className="hidden" tabIndex={-1} autoComplete="off" aria-hidden="true" />
 
               <div>
                 <label htmlFor="name" className="block text-xs font-mono uppercase tracking-wider text-muted mb-1.5">
@@ -151,14 +139,12 @@ export default function Contact() {
                 {status === "sending" ? "Sending…" : "Send message"}
               </button>
 
-              {status === "sent" && (
-                <p className="text-accent text-sm">Message sent — I&apos;ll reply within a day.</p>
-              )}
+              {status === "sent" && <p className="text-accent text-sm">Message sent — I&apos;ll reply within a day.</p>}
               {status === "error" && <p className="text-danger text-sm">{errorMsg}</p>}
             </form>
           </div>
         </div>
       </div>
     </section>
-  );
+  )
 }
