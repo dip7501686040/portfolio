@@ -30,7 +30,7 @@ export default function ThemeToggle() {
             title={label}
             onClick={() => setTheme(value)}
             className={`flex h-8 w-8 items-center justify-center rounded-full transition-colors ${
-              active ? "bg-amber text-graphite" : "text-muted hover:text-ink"
+              active ? "bg-accent text-graphite" : "text-muted hover:text-ink"
             }`}
           >
             <Icon size={15} />

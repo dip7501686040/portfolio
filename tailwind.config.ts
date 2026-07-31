@@ -14,9 +14,7 @@ const config: Config = {
         line: "rgb(var(--color-line) / <alpha-value>)",
         ink: "rgb(var(--color-ink) / <alpha-value>)",
         muted: "rgb(var(--color-muted) / <alpha-value>)",
-        amber: "rgb(var(--color-amber) / <alpha-value>)",
-        amberDim: "rgb(var(--color-amberDim) / <alpha-value>)",
-        teal: "rgb(var(--color-teal) / <alpha-value>)",
+        accent: "rgb(var(--color-accent) / <alpha-value>)",
         danger: "rgb(var(--color-danger) / <alpha-value>)",
         scrim: "rgb(0 0 0 / <alpha-value>)"
       },
@@ -27,8 +25,8 @@ const config: Config = {
       },
       keyframes: {
         pulseDot: {
-          "0%, 100%": { opacity: "1", boxShadow: "0 0 0 0 rgba(79,209,197,0.5)" },
-          "50%": { opacity: "0.6", boxShadow: "0 0 0 6px rgba(79,209,197,0)" }
+          "0%, 100%": { opacity: "1", boxShadow: "0 0 0 0 rgb(var(--color-accent) / 0.5)" },
+          "50%": { opacity: "0.6", boxShadow: "0 0 0 6px rgb(var(--color-accent) / 0)" }
         },
         rise: {
           "0%": { opacity: "0", transform: "translateY(16px)" },

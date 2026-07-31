@@ -2,6 +2,11 @@
 @tailwind components;
 @tailwind utilities;
 
+/*
+  One accent color per theme (no second brand hue) — tuned so it reads
+  clearly against that theme's own background rather than reused as-is
+  across themes.
+*/
 :root,
 :root[data-theme="dark"] {
   --color-graphite: 11 14 20;
@@ -10,9 +15,7 @@
   --color-line: 35 42 56;
   --color-ink: 231 233 238;
   --color-muted: 138 147 166;
-  --color-amber: 232 163 61;
-  --color-amberDim: 138 100 35;
-  --color-teal: 79 209 197;
+  --color-accent: 232 163 61;
   --color-danger: 224 108 90;
 }
 
@@ -23,9 +26,7 @@
   --color-line: 222 225 234;
   --color-ink: 20 23 31;
   --color-muted: 86 91 107;
-  --color-amber: 184 101 14;
-  --color-amberDim: 231 185 138;
-  --color-teal: 13 133 119;
+  --color-accent: 176 92 8;
   --color-danger: 194 59 40;
 }
 
@@ -35,11 +36,9 @@
   --color-panel2: 47 33 83;
   --color-line: 92 74 140;
   --color-ink: 255 255 255;
-  --color-muted: 201 190 232;
-  --color-amber: 255 95 162;
-  --color-amberDim: 178 62 117;
-  --color-teal: 78 161 255;
-  --color-danger: 255 107 107;
+  --color-muted: 214 206 236;
+  --color-accent: 245 190 100;
+  --color-danger: 255 143 130;
 }
 
 html {
@@ -53,14 +52,14 @@ body {
 }
 
 html[data-theme="gradient"] body {
-  background-image: linear-gradient(135deg, #ff5fa2 0%, #8b5cf6 48%, #4ea1ff 100%);
+  background-image: linear-gradient(rgba(12, 7, 26, 0.55), rgba(12, 7, 26, 0.55)),
+    linear-gradient(135deg, #ff5fa2 0%, #8b5cf6 48%, #4ea1ff 100%);
   background-attachment: fixed;
   background-size: cover;
-  text-shadow: 0 1px 10px rgba(15, 8, 35, 0.4);
 }
 
 ::selection {
-  background: rgb(var(--color-amber));
+  background: rgb(var(--color-accent));
   color: rgb(var(--color-graphite));
 }
 
@@ -69,7 +68,7 @@ html[data-theme="gradient"] body {
   letter-spacing: 0.14em;
   text-transform: uppercase;
   font-size: 0.72rem;
-  color: rgb(var(--color-teal));
+  color: rgb(var(--color-accent));
 }
 
 .section-pad {
@@ -87,7 +86,7 @@ a:focus-visible,
 button:focus-visible,
 input:focus-visible,
 textarea:focus-visible {
-  outline: 2px solid rgb(var(--color-teal));
+  outline: 2px solid rgb(var(--color-accent));
   outline-offset: 3px;
 }
 

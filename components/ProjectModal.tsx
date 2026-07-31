@@ -59,14 +59,14 @@ export default function ProjectModal({
               <button
                 aria-label="Previous media"
                 onClick={() => setIndex((i) => (i - 1 + project.media.length) % project.media.length)}
-                className="absolute left-2 top-1/2 -translate-y-1/2 bg-scrim/70 text-white border border-line rounded-full p-2 hover:text-teal"
+                className="absolute left-2 top-1/2 -translate-y-1/2 bg-scrim/70 text-white border border-line rounded-full p-2 hover:text-accent"
               >
                 <ChevronLeft size={18} />
               </button>
               <button
                 aria-label="Next media"
                 onClick={() => setIndex((i) => (i + 1) % project.media.length)}
-                className="absolute right-2 top-1/2 -translate-y-1/2 bg-scrim/70 text-white border border-line rounded-full p-2 hover:text-teal"
+                className="absolute right-2 top-1/2 -translate-y-1/2 bg-scrim/70 text-white border border-line rounded-full p-2 hover:text-accent"
               >
                 <ChevronRight size={18} />
               </button>
@@ -87,7 +87,7 @@ export default function ProjectModal({
           <p className="text-muted mt-2 leading-relaxed">{project.description}</p>
           <div className="flex flex-wrap gap-2 mt-4">
             {project.tech.map((t) => (
-              <span key={t} className="text-xs font-mono text-teal bg-teal/10 border border-teal/30 rounded px-2 py-1">
+              <span key={t} className="text-xs font-mono text-accent bg-accent/10 border border-accent/30 rounded px-2 py-1">
                 {t}
               </span>
             ))}

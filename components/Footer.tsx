@@ -12,19 +12,19 @@ export default function Footer() {
           </div>
         </div>
         <div className="flex flex-wrap gap-4 text-sm">
-          <a href={`mailto:${profile.email}`} className="flex items-center gap-1.5 text-muted hover:text-teal">
+          <a href={`mailto:${profile.email}`} className="flex items-center gap-1.5 text-muted hover:text-accent">
             <Mail size={15} /> Email
           </a>
-          <a href={`tel:${profile.phone}`} className="flex items-center gap-1.5 text-muted hover:text-teal">
+          <a href={`tel:${profile.phone}`} className="flex items-center gap-1.5 text-muted hover:text-accent">
             <Phone size={15} /> Call
           </a>
-          <a href={profile.github} target="_blank" rel="noopener noreferrer" className="flex items-center gap-1.5 text-muted hover:text-teal">
+          <a href={profile.github} target="_blank" rel="noopener noreferrer" className="flex items-center gap-1.5 text-muted hover:text-accent">
             <Github size={15} /> GitHub
           </a>
-          <a href={profile.linkedin} target="_blank" rel="noopener noreferrer" className="flex items-center gap-1.5 text-muted hover:text-teal">
+          <a href={profile.linkedin} target="_blank" rel="noopener noreferrer" className="flex items-center gap-1.5 text-muted hover:text-accent">
             <Linkedin size={15} /> LinkedIn
           </a>
-          <a href={profile.resumeFile} download className="flex items-center gap-1.5 text-muted hover:text-teal">
+          <a href={profile.resumeFile} download className="flex items-center gap-1.5 text-muted hover:text-accent">
             <Download size={15} /> Resume
           </a>
         </div>

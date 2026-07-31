@@ -12,13 +12,13 @@ export default function Experience() {
             </h2>
             {experience.map((job) => (
               <div key={job.company} className="relative pl-6 border-l border-line">
-                <div className="absolute -left-[5px] top-1.5 h-2.5 w-2.5 rounded-full bg-amber" />
+                <div className="absolute -left-[5px] top-1.5 h-2.5 w-2.5 rounded-full bg-accent" />
                 <div className="font-mono text-xs text-muted mb-1">{job.period}</div>
                 <h3 className="font-display text-lg text-ink">
                   {job.role} <span className="text-muted font-body font-normal">· {job.company}</span>
                 </h3>
                 <div className="text-sm text-muted mb-3">{job.location}</div>
-                <ul className="space-y-1.5 text-sm text-ink/85 list-disc list-inside marker:text-teal">
+                <ul className="space-y-1.5 text-sm text-ink/85 list-disc list-inside marker:text-accent">
                   {job.points.map((p) => (
                     <li key={p}>{p}</li>
                   ))}

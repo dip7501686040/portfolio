@@ -77,7 +77,7 @@ export default function Contact() {
               <button
                 type="button"
                 onClick={() => signIn("google")}
-                className="mb-6 inline-flex items-center gap-2 rounded-md border border-line bg-panel px-4 py-2.5 text-sm font-medium text-ink hover:border-teal hover:text-teal transition-colors"
+                className="mb-6 inline-flex items-center gap-2 rounded-md border border-line bg-panel px-4 py-2.5 text-sm font-medium text-ink hover:border-accent hover:text-accent transition-colors"
               >
                 <GoogleIcon />
                 Continue with Google
@@ -144,14 +144,14 @@ export default function Contact() {
               <button
                 type="submit"
                 disabled={status === "sending"}
-                className="inline-flex items-center gap-2 rounded-md bg-amber px-5 py-3 font-medium text-graphite hover:bg-amber/90 transition-colors disabled:opacity-60"
+                className="inline-flex items-center gap-2 rounded-md bg-accent px-5 py-3 font-medium text-graphite hover:bg-accent/90 transition-colors disabled:opacity-60"
               >
                 <Send size={16} />
                 {status === "sending" ? "Sending…" : "Send message"}
               </button>
 
               {status === "sent" && (
-                <p className="text-teal text-sm">Message sent — I&apos;ll reply within a day.</p>
+                <p className="text-accent text-sm">Message sent — I&apos;ll reply within a day.</p>
               )}
               {status === "error" && <p className="text-danger text-sm">{errorMsg}</p>}
             </form>

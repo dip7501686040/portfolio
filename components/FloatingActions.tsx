@@ -11,7 +11,7 @@ export default function FloatingActions() {
       <a
         href={`tel:${profile.phone}`}
         aria-label="Call Dipankar"
-        className="flex items-center justify-center h-12 w-12 rounded-full bg-panel border border-line text-ink hover:border-teal hover:text-teal shadow-lg shadow-black/30 transition-colors"
+        className="flex items-center justify-center h-12 w-12 rounded-full bg-panel border border-line text-ink hover:border-accent hover:text-accent shadow-lg shadow-black/30 transition-colors"
       >
         <Phone size={20} />
       </a>

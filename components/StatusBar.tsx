@@ -10,8 +10,8 @@ export default function StatusBar() {
               <div className="eyebrow flex items-center gap-2">
                 {i === 3 && (
                   <span className="relative flex h-2 w-2">
-                    <span className="absolute inline-flex h-full w-full rounded-full bg-teal animate-pulseDot" />
-                    <span className="relative inline-flex h-2 w-2 rounded-full bg-teal" />
+                    <span className="absolute inline-flex h-full w-full rounded-full bg-accent animate-pulseDot" />
+                    <span className="relative inline-flex h-2 w-2 rounded-full bg-accent" />
                   </span>
                 )}
                 {s.label}

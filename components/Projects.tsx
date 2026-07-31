@@ -30,7 +30,7 @@ export default function Projects() {
                   <button
                     key={p.slug}
                     onClick={() => setActive(p)}
-                    className="text-left group bg-panel border border-line rounded-xl overflow-hidden hover:border-teal/60 transition-colors"
+                    className="text-left group bg-panel border border-line rounded-xl overflow-hidden hover:border-accent/60 transition-colors"
                   >
                     <div className="relative aspect-[16/10] bg-panel2 overflow-hidden">
                       {/* eslint-disable-next-line @next/next/no-img-element */}
@@ -53,7 +53,7 @@ export default function Projects() {
                         {p.tags.map((t) => (
                           <span
                             key={t}
-                            className="text-xs font-mono text-amber bg-amber/10 border border-amber/30 rounded px-2 py-1"
+                            className="text-xs font-mono text-accent bg-accent/10 border border-accent/30 rounded px-2 py-1"
                           >
                             {t}
                           </span>
