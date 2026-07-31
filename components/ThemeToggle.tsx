@@ -16,7 +16,7 @@ export default function ThemeToggle() {
     <div
       role="radiogroup"
       aria-label="Theme"
-      className="fixed top-5 right-5 z-40 flex items-center gap-1 rounded-full border border-line bg-panel/80 p-1 shadow-lg shadow-black/20 backdrop-blur"
+      className="flex items-center gap-1 rounded-full border border-line bg-panel/80 p-1 shadow-lg shadow-black/20 backdrop-blur"
     >
       {options.map(({ value, label, icon: Icon }) => {
         const active = theme === value;

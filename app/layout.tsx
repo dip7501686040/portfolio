@@ -4,6 +4,7 @@ import "./globals.css";
 import Providers from "@/components/Providers";
 import FloatingActions from "@/components/FloatingActions";
 import ThemeToggle from "@/components/ThemeToggle";
+import AccountMenu from "@/components/AccountMenu";
 import { NO_FLASH_SCRIPT } from "@/components/ThemeProvider";
 
 const display = Space_Grotesk({
@@ -52,7 +53,10 @@ export default function RootLayout({
       <body className="font-body bg-graphite text-ink antialiased">
         <Providers>
           {children}
-          <ThemeToggle />
+          <div className="fixed top-5 right-5 z-40 flex items-center gap-3">
+            <AccountMenu />
+            <ThemeToggle />
+          </div>
           <FloatingActions />
         </Providers>
       </body>
