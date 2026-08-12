@@ -27,14 +27,12 @@ export default function ArchitectureEventFlow() {
           handling each step. Click any component for its low-level design.
         </p>
 
-        <div className="grid lg:grid-cols-[320px_1fr] gap-6 items-start">
-          <div className="lg:sticky lg:top-6">
-            <HLDDiagram
-              activeIds={activeIds}
-              completedIds={completedIds}
-              onSelect={setSelectedComponent}
-            />
-          </div>
+        <div className="space-y-6">
+          <HLDDiagram
+            activeIds={activeIds}
+            completedIds={completedIds}
+            onSelect={setSelectedComponent}
+          />
           <EventFlowCarousel activeIndex={activeIndex} onChange={setActiveIndex} />
         </div>
       </div>

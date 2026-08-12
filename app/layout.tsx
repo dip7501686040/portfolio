@@ -24,11 +24,11 @@ const mono = JetBrains_Mono({
 })
 
 export const metadata: Metadata = {
-  title: "Dipankar Saha | Senior Full Stack AI Engineer",
-  description: "Senior Full Stack Engineer (6+ yrs) building React/Next.js, NestJS, and AI/RAG-powered systems for global clients. Available for freelance and full-time engagements.",
+  title: "Dipankar Saha | Senior Backend / Full Stack Engineer | AI & Distributed Systems",
+  description: "Senior Backend/Full Stack Engineer (6+ yrs) building React/Next.js, NestJS, and AI/RAG-powered systems for global clients. Available for freelance and full-time engagements.",
   metadataBase: new URL("https://example.com"),
   openGraph: {
-    title: "Dipankar Saha | Senior Full Stack AI Engineer",
+    title: "Dipankar Saha | Senior Backend / Full Stack Engineer | AI & Distributed Systems",
     description: "React, Next.js, NestJS, Node.js, AI/LLM & RAG systems, Kubernetes. Open to remote & relocation.",
     type: "website"
   }

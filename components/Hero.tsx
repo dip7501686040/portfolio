@@ -24,9 +24,9 @@ export default function Hero() {
             {profile.title}
           </p>
           <p className="mt-5 max-w-xl text-muted text-base sm:text-lg animate-rise [animation-delay:220ms] opacity-0 [animation-fill-mode:forwards]">
-            I design and ship production-grade web platforms and AI/RAG systems —
-            from React front ends to event-driven microservices — for teams that
-            need senior-level ownership, not just code.
+            I design and ship production-grade web platforms and AI-powered
+            products — from React front ends to event-driven microservices —
+            for teams that need senior-level ownership, not just code.
           </p>
 
           <div className="mt-8 flex flex-wrap gap-3 animate-rise [animation-delay:300ms] opacity-0 [animation-fill-mode:forwards]">

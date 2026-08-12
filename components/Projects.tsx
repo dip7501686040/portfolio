@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 import Link from "next/link";
-import { Play, Images, ArrowRight } from "lucide-react";
+import { Play, Images, ArrowRight, Clock, Maximize2 } from "lucide-react";
 import { projects, type Project } from "@/lib/data";
 import ProjectModal from "./ProjectModal";
 
@@ -27,8 +27,10 @@ export default function Projects() {
               {projects.map((p) => {
                 const cover = p.media[0];
                 const hasVideo = p.media.some((m) => m.type === "video");
-                const cardClass =
-                  "text-left group bg-panel border border-line rounded-xl overflow-hidden hover:border-accent/60 transition-colors";
+                const caseStudyHref = p.hasCaseStudy ? `/projects/${p.slug}` : undefined;
+                const cardClass = p.comingSoon
+                  ? "relative text-left bg-panel border border-line rounded-xl overflow-hidden cursor-default group"
+                  : "relative text-left group bg-panel border border-line rounded-xl overflow-hidden hover:border-accent/60 transition-colors";
 
                 const cardBody = (
                   <>
@@ -41,20 +43,34 @@ export default function Projects() {
                       />
                       <div className="absolute inset-0 bg-scrim/0 group-hover:bg-scrim/40 transition-colors flex items-center justify-center">
                         <span className="opacity-0 group-hover:opacity-100 transition-opacity flex items-center gap-2 text-white bg-scrim/70 border border-line rounded-full px-4 py-2 text-sm">
-                          {p.caseStudyHref ? (
+                          {p.comingSoon ? (
+                            <Clock size={14} />
+                          ) : caseStudyHref ? (
                             <ArrowRight size={14} />
                           ) : hasVideo ? (
                             <Play size={14} />
                           ) : (
                             <Images size={14} />
                           )}
-                          {p.caseStudyHref
+                          {p.comingSoon
+                            ? "Case study coming soon"
+                            : caseStudyHref
                             ? "Open case study"
                             : hasVideo
                             ? "Watch demo"
                             : `View gallery (${p.media.length})`}
                         </span>
                       </div>
+                      {caseStudyHref && (
+                        <button
+                          type="button"
+                          aria-label={`View full-size cover image for ${p.title}`}
+                          onClick={() => setActive(p)}
+                          className="absolute right-3 top-3 z-20 bg-scrim/70 text-white border border-line rounded-full p-2 opacity-0 group-hover:opacity-100 transition-opacity hover:text-accent"
+                        >
+                          <Maximize2 size={14} />
+                        </button>
+                      )}
                     </div>
                     <div className="p-5">
                       <h3 className="font-display text-lg text-ink">{p.title}</h3>
@@ -73,10 +89,21 @@ export default function Projects() {
                   </>
                 );
 
-                return p.caseStudyHref ? (
-                  <Link key={p.slug} href={p.caseStudyHref} className={cardClass}>
+                return p.comingSoon ? (
+                  <div key={p.slug} className={cardClass}>
                     {cardBody}
-                  </Link>
+                  </div>
+                ) : caseStudyHref ? (
+                  <div key={p.slug} className={cardClass}>
+                    {cardBody}
+                    {/* Stretched link: sits below the zoom button (z-10 < z-20) so the
+                        button stays clickable while the rest of the card still navigates. */}
+                    <Link
+                      href={caseStudyHref}
+                      aria-label={`Open case study: ${p.title}`}
+                      className="absolute inset-0 z-10"
+                    />
+                  </div>
                 ) : (
                   <button key={p.slug} onClick={() => setActive(p)} className={cardClass}>
                     {cardBody}

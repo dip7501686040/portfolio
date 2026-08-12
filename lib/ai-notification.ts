@@ -28,14 +28,14 @@ export type ArchitectureComponentId =
   | "observability"
   | "analytics-service"
   | "audit-service"
-  | "prediction-service";
+  | "prediction-service"
 
 export type ArchitectureComponent = {
-  id: ArchitectureComponentId;
-  label: string;
-  category: "client" | "service" | "broker" | "datastore" | "ai" | "infra" | "channel";
-  role: string;
-};
+  id: ArchitectureComponentId
+  label: string
+  category: "client" | "service" | "broker" | "datastore" | "ai" | "infra" | "channel"
+  role: string
+}
 
 // The catalog of real components in the system. LLD content for each lives
 // in `lldDetails` below, keyed by the same id.
@@ -154,23 +154,19 @@ export const architectureComponents: ArchitectureComponent[] = [
     category: "ai",
     role: "Reserved for in-house ML models — scaffolded only, not yet built"
   }
-];
+]
 
-export const architectureComponentMap: Record<ArchitectureComponentId, ArchitectureComponent> =
-  Object.fromEntries(architectureComponents.map((c) => [c.id, c])) as Record<
-    ArchitectureComponentId,
-    ArchitectureComponent
-  >;
+export const architectureComponentMap: Record<ArchitectureComponentId, ArchitectureComponent> = Object.fromEntries(architectureComponents.map((c) => [c.id, c])) as Record<ArchitectureComponentId, ArchitectureComponent>
 
 // The primary-flow diagram positions RabbitMQ at 4 separate hops even
 // though it's one broker instance. Each hop gets its own id (rabbitmq-1..4)
 // so a step can highlight *the specific hop it's at* instead of every
 // RabbitMQ node glowing together — architectureComponentMap lookups still
 // resolve through baseComponentId() below.
-export type FlowNodeId = ArchitectureComponentId | "rabbitmq-1" | "rabbitmq-2" | "rabbitmq-3" | "rabbitmq-4";
+export type FlowNodeId = ArchitectureComponentId | "rabbitmq-1" | "rabbitmq-2" | "rabbitmq-3" | "rabbitmq-4"
 
 export function baseComponentId(flowNodeId: FlowNodeId): ArchitectureComponentId {
-  return flowNodeId.startsWith("rabbitmq-") ? "rabbitmq" : (flowNodeId as ArchitectureComponentId);
+  return flowNodeId.startsWith("rabbitmq-") ? "rabbitmq" : (flowNodeId as ArchitectureComponentId)
 }
 
 // Visual order of the primary event pipeline — the literal path a single
@@ -188,7 +184,7 @@ export const primaryFlowOrder: FlowNodeId[] = [
   "rabbitmq-4",
   "channel-service",
   "notification-channels"
-];
+]
 
 // Shown as supporting infrastructure below the primary pipeline — real
 // services/dependencies that aren't part of a single event's direct path.
@@ -203,17 +199,17 @@ export const supportingComponentIds: ArchitectureComponentId[] = [
   "analytics-service",
   "audit-service",
   "prediction-service"
-];
+]
 
 export type EventFlowStep = {
-  id: string;
-  title: string;
-  message: string;
-  description: string;
-  flowLabel: string;
-  highlightComponents: FlowNodeId[];
-  screenshotKey: keyof typeof aiNotificationAssets.eventFlowScreenshots;
-};
+  id: string
+  title: string
+  message: string
+  description: string
+  flowLabel: string
+  highlightComponents: FlowNodeId[]
+  screenshotKey: keyof typeof aiNotificationAssets.eventFlowScreenshots
+}
 
 // The 9 real stages of one event's journey, in the order they were
 // actually captured end to end (dashboard submit through both delivery
@@ -232,8 +228,7 @@ export const eventFlowSteps: EventFlowStep[] = [
     id: "gateway-dispatch",
     title: "Gateway Dispatch",
     message: "gRPC CreateEvent",
-    description:
-      "API Gateway resolves the caller's identity and forwards the request to Event Service over internal gRPC.",
+    description: "API Gateway resolves the caller's identity and forwards the request to Event Service over internal gRPC.",
     flowLabel: "API Gateway → Event Service (gRPC)",
     highlightComponents: ["api-gateway", "event-service"],
     screenshotKey: "gatewayDispatch"
@@ -242,8 +237,7 @@ export const eventFlowSteps: EventFlowStep[] = [
     id: "event-created",
     title: "Event Created",
     message: "event.created",
-    description:
-      "Event Service stores the event and publishes event.created onto RabbitMQ for asynchronous processing.",
+    description: "Event Service stores the event and publishes event.created onto RabbitMQ for asynchronous processing.",
     flowLabel: "Event Service → RabbitMQ",
     highlightComponents: ["event-service", "rabbitmq-1"],
     screenshotKey: "eventCreated"
@@ -252,8 +246,7 @@ export const eventFlowSteps: EventFlowStep[] = [
     id: "rule-matched",
     title: "Rule Evaluation & Match",
     message: "event.created → event.rule.matched",
-    description:
-      "Rule Engine consumes event.created, evaluates the tenant's active rules, and publishes event.rule.matched with every rule that matched.",
+    description: "Rule Engine consumes event.created, evaluates the tenant's active rules, and publishes event.rule.matched with every rule that matched.",
     flowLabel: "RabbitMQ → Rule Engine Service → RabbitMQ",
     highlightComponents: ["rabbitmq-1", "rule-engine"],
     screenshotKey: "ruleMatched"
@@ -262,8 +255,7 @@ export const eventFlowSteps: EventFlowStep[] = [
     id: "ai-processing",
     title: "AI Processing",
     message: "event.rule.matched → event.ai.completed",
-    description:
-      "AI Service consumes the matched event, runs an LLM analysis with RAG-based duplicate detection, and publishes event.ai.completed.",
+    description: "AI Service consumes the matched event, runs an LLM analysis with RAG-based duplicate detection, and publishes event.ai.completed.",
     flowLabel: "RabbitMQ → AI Service → RabbitMQ",
     highlightComponents: ["rabbitmq-2", "ai-service"],
     screenshotKey: "aiProcessing"
@@ -272,8 +264,7 @@ export const eventFlowSteps: EventFlowStep[] = [
     id: "notification-created",
     title: "Notification Processing",
     message: "event.ai.completed → notification.created",
-    description:
-      "Notification Service consumes the AI result, creates a notification per matched rule action, and publishes notification.created.",
+    description: "Notification Service consumes the AI result, creates a notification per matched rule action, and publishes notification.created.",
     flowLabel: "RabbitMQ → Notification Service → RabbitMQ",
     highlightComponents: ["rabbitmq-3", "notification-service"],
     screenshotKey: "notificationCreated"
@@ -282,8 +273,7 @@ export const eventFlowSteps: EventFlowStep[] = [
     id: "channel-dispatch",
     title: "Channel Dispatch",
     message: "notification.created → notification.sent",
-    description:
-      "Channel Service consumes notification.created, dispatches through the action's configured channel, and reports the outcome back over RabbitMQ.",
+    description: "Channel Service consumes notification.created, dispatches through the action's configured channel, and reports the outcome back over RabbitMQ.",
     flowLabel: "RabbitMQ → Channel Service → Notification Channels",
     highlightComponents: ["rabbitmq-4", "channel-service", "notification-channels"],
     screenshotKey: "channelDispatch"
@@ -292,8 +282,7 @@ export const eventFlowSteps: EventFlowStep[] = [
     id: "dashboard-delivery",
     title: "Live Dashboard Delivery",
     message: "Socket.IO push",
-    description:
-      "For a dashboard-channel action, the notification appears in the web dashboard in real time over a Socket.IO connection relayed by API Gateway.",
+    description: "For a dashboard-channel action, the notification appears in the web dashboard in real time over a Socket.IO connection relayed by API Gateway.",
     flowLabel: "Channel Service → API Gateway → Web Dashboard",
     highlightComponents: ["notification-channels", "api-gateway", "application"],
     screenshotKey: "dashboardDelivery"
@@ -302,50 +291,37 @@ export const eventFlowSteps: EventFlowStep[] = [
     id: "email-delivery",
     title: "Email Delivery",
     message: "SMTP delivery",
-    description:
-      "For an email-channel action, the same notification is delivered to the recipient's inbox over Gmail SMTP.",
+    description: "For an email-channel action, the same notification is delivered to the recipient's inbox over Gmail SMTP.",
     flowLabel: "Channel Service → Notification Channels (Email)",
     highlightComponents: ["notification-channels"],
     screenshotKey: "emailDelivery"
   }
-];
+]
 
 export type LLDDetail = {
-  responsibilities?: string[];
-  internalFlow?: string;
-  apis?: string[];
-  events?: string[];
-  rabbitmqInteraction?: string;
-  database?: string;
-  failureHandling?: string;
-  scaling?: string;
-  security?: string;
-};
+  responsibilities?: string[]
+  internalFlow?: string
+  apis?: string[]
+  events?: string[]
+  rabbitmqInteraction?: string
+  database?: string
+  failureHandling?: string
+  scaling?: string
+  security?: string
+}
 
 // Real content pulled from the codebase, keyed by architecture component id.
 // A field is omitted (not guessed) wherever nothing concrete was found.
 export const lldDetails: Record<ArchitectureComponentId, LLDDetail> = {
   application: {
-    responsibilities: [
-      "Submit test events against a tenant",
-      "Show notifications live as they arrive",
-      "Manage tenants, rules, templates, API keys and billing"
-    ],
-    internalFlow:
-      "Next.js app. Connects to API Gateway's Socket.IO namespace after JWT handshake, subscribes to its tenant's room, and receives notification/notification-status events in real time instead of polling.",
+    responsibilities: ["Submit test events against a tenant", "Show notifications live as they arrive", "Manage tenants, rules, templates, API keys and billing"],
+    internalFlow: "Next.js app. Connects to API Gateway's Socket.IO namespace after JWT handshake, subscribes to its tenant's room, and receives notification/notification-status events in real time instead of polling.",
     security: "JWT stored client-side; every request goes through API Gateway, never to a backend service directly."
   },
   "api-gateway": {
-    responsibilities: [
-      "The only public entry point for every client request",
-      "Authentication, rate limiting, request routing",
-      "No business logic of its own"
-    ],
-    internalFlow:
-      "Every backend service's own REST surface was removed in favor of api-gateway proxying each request to the owning service over internal gRPC, after resolving the caller's identity.",
-    apis: [
-      "Full REST surface for auth, tenants, events, rules, ai-analyses, notifications, templates, analytics, audit-logs, api-keys, admin, and the Stripe webhook"
-    ],
+    responsibilities: ["The only public entry point for every client request", "Authentication, rate limiting, request routing", "No business logic of its own"],
+    internalFlow: "Every backend service's own REST surface was removed in favor of api-gateway proxying each request to the owning service over internal gRPC, after resolving the caller's identity.",
+    apis: ["Full REST surface for auth, tenants, events, rules, ai-analyses, notifications, templates, analytics, audit-logs, api-keys, admin, and the Stripe webhook"],
     events: ["Consumes: notification.dashboard.push, notification.status.updated (relayed to the browser over Socket.IO)"],
     rabbitmqInteraction: "Its only RabbitMQ role is consuming those two push events to relay to the correct tenant's Socket.IO room.",
     failureHandling: "A global exception filter maps every downstream gRPC error to the correct HTTP status code.",
@@ -354,19 +330,14 @@ export const lldDetails: Record<ArchitectureComponentId, LLDDetail> = {
       "Resolves every bearer token via gRPC to Identity Service rather than verifying JWTs locally. CORS locked to the configured frontend origin, credentials disabled (bearer tokens, not cookies). Redis-backed fixed-window rate limiting per API key. The Stripe webhook route authenticates purely via signature verification, since Stripe calls it directly."
   },
   "event-service": {
-    responsibilities: [
-      "Validate and persist incoming events",
-      "Enforce tenant membership on every request",
-      "Publish event.created onto RabbitMQ"
-    ],
+    responsibilities: ["Validate and persist incoming events", "Enforce tenant membership on every request", "Publish event.created onto RabbitMQ"],
     internalFlow:
       "Rejects an event outright (400) if no enabled rule could ever match its type, rather than accepting it and silently producing zero notifications. Persists as status: received, publishes event.created, then updates status to published (or failed if the publish throws).",
     apis: ["POST /events (ingest)", "GET /events?tenantId= (paginated/searchable/sortable)", "GET /events/:id"],
     events: ["Publishes: event.created"],
     rabbitmqInteraction: "Publisher only — publishes event.created to the platform topic exchange.",
     database: "PostgreSQL — event_db",
-    failureHandling:
-      "A rule-match precheck rejects dead-end events at ingest time. If the RabbitMQ publish itself throws, the event is persisted with status: failed rather than left ambiguous.",
+    failureHandling: "A rule-match precheck rejects dead-end events at ingest time. If the RabbitMQ publish itself throws, the event is persisted with status: failed rather than left ambiguous.",
     scaling: "Stateless — horizontally scalable behind API Gateway; RabbitMQ decouples it from every downstream consumer's throughput.",
     security: "Every route requires a valid JWT and tenant membership, both checked over gRPC — never trusts a client-supplied tenantId."
   },
@@ -394,11 +365,7 @@ export const lldDetails: Record<ArchitectureComponentId, LLDDetail> = {
     security: "Internal-only, not exposed outside the Docker network."
   },
   "rule-engine": {
-    responsibilities: [
-      "CRUD for tenant rules",
-      "Evaluate every active rule against each event.created",
-      "Publish event.rule.matched with every rule that matched"
-    ],
+    responsibilities: ["CRUD for tenant rules", "Evaluate every active rule against each event.created", "Publish event.rule.matched with every rule that matched"],
     internalFlow:
       "Loads the tenant's enabled rules matching the event type (or a \"*\" wildcard), evaluates each rule's condition tree with a pure in-memory evaluator (AND / OR / NOT / equals / contains / regex / greater-than / less-than over a flattened {type, source, tenantId, ...payload} context), records a match per rule, and publishes exactly one event.rule.matched per event carrying every matched rule — not one message per rule.",
     apis: ["POST/GET/PATCH/DELETE /rules (via API Gateway)"],
@@ -410,19 +377,10 @@ export const lldDetails: Record<ArchitectureComponentId, LLDDetail> = {
     security: "Rule CRUD requires JWT + tenant membership, the same gRPC-checked pattern as every other service."
   },
   "ai-service": {
-    responsibilities: [
-      "Multi-provider LLM analysis of matched events",
-      "RAG-based duplicate detection",
-      "Per-tenant AI provider configuration"
-    ],
+    responsibilities: ["Multi-provider LLM analysis of matched events", "RAG-based duplicate detection", "Per-tenant AI provider configuration"],
     internalFlow:
       "Embeds the event text and retrieves semantically similar recent analyses for the same tenant (RAG) before calling the tenant's configured LLM — OpenAI, Anthropic, or a local Ollama model, all behind one LangChain interface with structured output — then persists the analysis and publishes event.ai.completed.",
-    apis: [
-      "GET /ai-analyses?tenantId=",
-      "GET /ai-analyses/:id",
-      "GET /ai-analyses/by-event/:eventId",
-      "GET/PUT /ai-config (per-tenant provider/model, owner/admin only)"
-    ],
+    apis: ["GET /ai-analyses?tenantId=", "GET /ai-analyses/:id", "GET /ai-analyses/by-event/:eventId", "GET/PUT /ai-config (per-tenant provider/model, owner/admin only)"],
     events: ["Consumes: event.rule.matched", "Publishes: event.ai.completed, audit.created (on failure)"],
     rabbitmqInteraction: "Queue ai-service.event.rule.matched. Publishes to platform/event.ai.completed.",
     database: "PostgreSQL — ai_db (EventAnalysis, TenantAiConfig)",
@@ -431,11 +389,7 @@ export const lldDetails: Record<ArchitectureComponentId, LLDDetail> = {
     security: "Per-tenant AI provider config is write-gated to owner/admin roles; reads are open to any tenant member."
   },
   "notification-service": {
-    responsibilities: [
-      "Own the full notification lifecycle",
-      "Turn a matched rule's actions into tracked notification rows",
-      "Schedule and drive retries"
-    ],
+    responsibilities: ["Own the full notification lifecycle", "Turn a matched rule's actions into tracked notification rows", "Schedule and drive retries"],
     internalFlow:
       "Creates one Notification per configured rule action (merging the rule match and AI analysis into the content, rendering a template if one is set), then publishes notification.created to hand the actual send off to Channel Service — it never calls Channel Service directly. Reacts to Channel Service's outcome events to update each row's status, and a poller republishes notification.created to redrive anything past its retry time.",
     apis: ["GET /notifications?tenantId=&status=", "GET /notifications/:id", "PATCH /notifications/:id/read"],
@@ -470,14 +424,8 @@ export const lldDetails: Record<ArchitectureComponentId, LLDDetail> = {
   },
   authentication: {
     responsibilities: ["User accounts, password auth, Google OAuth", "Issue and validate JWTs for every other service"],
-    internalFlow:
-      "Register/login hash passwords with bcrypt and issue a JWT. Every other service validates a bearer token by calling this service's ValidateToken gRPC method rather than verifying it locally.",
-    apis: [
-      "POST /auth/register, /auth/login",
-      "GET /auth/me",
-      "POST /auth/forgot-password, /auth/reset-password",
-      "GET /auth/google, /auth/google/callback"
-    ],
+    internalFlow: "Register/login hash passwords with bcrypt and issue a JWT. Every other service validates a bearer token by calling this service's ValidateToken gRPC method rather than verifying it locally.",
+    apis: ["POST /auth/register, /auth/login", "GET /auth/me", "POST /auth/forgot-password, /auth/reset-password", "GET /auth/google, /auth/google/callback"],
     database: "PostgreSQL — identity_db (User, PasswordResetToken)",
     failureHandling: "Forgot/reset-password tokens are SHA-256-hashed with a 1-hour expiry, single-use.",
     scaling: "Stateless; horizontally scalable behind API Gateway's gRPC calls.",
@@ -539,7 +487,8 @@ export const lldDetails: Record<ArchitectureComponentId, LLDDetail> = {
   },
   "audit-service": {
     responsibilities: ["Audit trail across the platform"],
-    internalFlow: "Consumes audit.created (a generic key reused by Rule Engine, AI Service, and Notification Service for their own action/failure events) plus notification.sent and event.ai.completed directly, and writes an audit log row for each.",
+    internalFlow:
+      "Consumes audit.created (a generic key reused by Rule Engine, AI Service, and Notification Service for their own action/failure events) plus notification.sent and event.ai.completed directly, and writes an audit log row for each.",
     apis: ["GET /audit-logs", "GET /audit-logs/me"],
     events: ["Consumes: audit.created, notification.sent, event.ai.completed"],
     database: "PostgreSQL — audit_db",
@@ -550,19 +499,19 @@ export const lldDetails: Record<ArchitectureComponentId, LLDDetail> = {
     internalFlow: "Scaffolded only today: a Python service exposing just a gRPC health check. No prediction models or endpoints are implemented yet.",
     database: "None yet"
   }
-};
+}
 
 export type TechBadge = {
-  name: string;
-  status?: "roadmap";
-};
+  name: string
+  status?: "roadmap"
+}
 
 export type EngineeringDemo = {
-  id: string;
-  title: string;
-  category: string;
-  description: string;
-};
+  id: string
+  title: string
+  category: string
+  description: string
+}
 
 export const engineeringDemos: EngineeringDemo[] = [
   {
@@ -643,7 +592,7 @@ export const engineeringDemos: EngineeringDemo[] = [
     category: "Architecture",
     description: "Every public REST route is a thin API Gateway proxy over internal gRPC to the service that owns it."
   }
-];
+]
 
 export const caseStudyContent = {
   heroTitle: "AI Notification System",
@@ -663,39 +612,29 @@ export const caseStudyContent = {
   problem:
     "Reacting to product and system events in real time — evaluating rules, generating context-aware notification content, and delivering it through the right channel — doesn't fit cleanly into a single request/response path without coupling every step together and failing under load.",
   solution:
-    "An event-driven platform where rule evaluation, AI content generation, and delivery each run as independent services, communicating asynchronously over a single RabbitMQ exchange so the pipeline stays resilient and each stage can scale on its own."
-};
+    "An event-driven system where rule evaluation, AI content generation, and delivery each run as independent services, communicating asynchronously over a single RabbitMQ exchange so the pipeline stays resilient and each stage can scale on its own."
+}
 
 // Local/CDN asset paths. Empty strings render as clearly-marked "pending"
 // placeholders in the UI rather than a broken image/video.
 export const aiNotificationAssets = {
-  productVideo:
-    "https://res.cloudinary.com/dhexmnaxl/video/upload/v1786456324/Full_product_demo_ui_dv_edited_vor33x.mp4",
+  productVideo: "https://res.cloudinary.com/dhexmnaxl/video/upload/v1786456324/Full_product_demo_ui_dv_edited_vor33x.mp4",
   // No separate poster was provided — reusing the first real pipeline
   // screenshot (the event-submit UI) rather than a generic placeholder.
-  productPoster:
-    "https://res.cloudinary.com/dhexmnaxl/image/upload/v1786456292/Event_Send_UI_ec8ggr.png",
+  productPoster: "https://res.cloudinary.com/dhexmnaxl/image/upload/v1786456292/Event_Send_UI_ec8ggr.png",
   github: "https://github.com/dip7501686040/ai-notification-system",
   liveDemo: "",
   eventFlowScreenshots: {
     eventSubmitted: "https://res.cloudinary.com/dhexmnaxl/image/upload/v1786456292/Event_Send_UI_ec8ggr.png",
-    gatewayDispatch:
-      "https://res.cloudinary.com/dhexmnaxl/image/upload/v1786456291/api-gateway_dispatch_createEvent_g7ptqf.png",
-    eventCreated:
-      "https://res.cloudinary.com/dhexmnaxl/image/upload/v1786456291/event-service_publish_event.created_wmjok1.png",
-    ruleMatched:
-      "https://res.cloudinary.com/dhexmnaxl/image/upload/v1786456294/rule-engine_servcie_consume_event.created_and_publish_event.rule.matched_ht9bhm.png",
-    aiProcessing:
-      "https://res.cloudinary.com/dhexmnaxl/image/upload/v1786456298/rule-engine_servcie_consume_event.created_ubmi6u.png",
-    notificationCreated:
-      "https://res.cloudinary.com/dhexmnaxl/image/upload/v1786456301/notification-service_consume_event.ai.completed_and_publish_notification.created_t7e0do.png",
-    channelDispatch:
-      "https://res.cloudinary.com/dhexmnaxl/image/upload/v1786456291/channel-servcie_consume_notification.created_and_publish_notfication.sent_l4irve.png",
-    dashboardDelivery:
-      "https://res.cloudinary.com/dhexmnaxl/image/upload/v1786456294/Recived_notfication_with_socket.io_connection_in_dashboard_zuae7o.png",
-    emailDelivery:
-      "https://res.cloudinary.com/dhexmnaxl/image/upload/v1786456292/Recieved_notification_in_email_tzmmdw.png"
+    gatewayDispatch: "https://res.cloudinary.com/dhexmnaxl/image/upload/v1786456291/api-gateway_dispatch_createEvent_g7ptqf.png",
+    eventCreated: "https://res.cloudinary.com/dhexmnaxl/image/upload/v1786456291/event-service_publish_event.created_wmjok1.png",
+    ruleMatched: "https://res.cloudinary.com/dhexmnaxl/image/upload/v1786456294/rule-engine_servcie_consume_event.created_and_publish_event.rule.matched_ht9bhm.png",
+    aiProcessing: "https://res.cloudinary.com/dhexmnaxl/image/upload/v1786456298/rule-engine_servcie_consume_event.created_ubmi6u.png",
+    notificationCreated: "https://res.cloudinary.com/dhexmnaxl/image/upload/v1786456301/notification-service_consume_event.ai.completed_and_publish_notification.created_t7e0do.png",
+    channelDispatch: "https://res.cloudinary.com/dhexmnaxl/image/upload/v1786456291/channel-servcie_consume_notification.created_and_publish_notfication.sent_l4irve.png",
+    dashboardDelivery: "https://res.cloudinary.com/dhexmnaxl/image/upload/v1786456294/Recived_notfication_with_socket.io_connection_in_dashboard_zuae7o.png",
+    emailDelivery: "https://res.cloudinary.com/dhexmnaxl/image/upload/v1786456292/Recieved_notification_in_email_tzmmdw.png"
   },
   // Keyed by EngineeringDemo.id — populate as previews become available.
   engineeringDemoPreviews: {} as Record<string, string>
-};
+}
