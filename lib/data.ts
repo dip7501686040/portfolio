@@ -104,6 +104,8 @@ export type Project = {
   tags: string[];
   tech: string[];
   media: ProjectMedia[];
+  /** When set, the project card links to a dedicated case-study page instead of opening the gallery modal. */
+  caseStudyHref?: string;
 };
 
 export const projects: Project[] = [
@@ -119,7 +121,8 @@ export const projects: Project[] = [
     media: [
       { type: "image", src: "/projects/notification-platform-1.svg", alt: "Notification platform architecture diagram" },
       { type: "image", src: "/projects/notification-platform-2.svg", alt: "Notification platform observability dashboard" }
-    ]
+    ],
+    caseStudyHref: "/projects/ai-notification-system"
   },
   {
     slug: "tenantguard",

@@ -1,7 +1,8 @@
 "use client";
 
 import { useState } from "react";
-import { Play, Images } from "lucide-react";
+import Link from "next/link";
+import { Play, Images, ArrowRight } from "lucide-react";
 import { projects, type Project } from "@/lib/data";
 import ProjectModal from "./ProjectModal";
 
@@ -26,12 +27,11 @@ export default function Projects() {
               {projects.map((p) => {
                 const cover = p.media[0];
                 const hasVideo = p.media.some((m) => m.type === "video");
-                return (
-                  <button
-                    key={p.slug}
-                    onClick={() => setActive(p)}
-                    className="text-left group bg-panel border border-line rounded-xl overflow-hidden hover:border-accent/60 transition-colors"
-                  >
+                const cardClass =
+                  "text-left group bg-panel border border-line rounded-xl overflow-hidden hover:border-accent/60 transition-colors";
+
+                const cardBody = (
+                  <>
                     <div className="relative aspect-[16/10] bg-panel2 overflow-hidden">
                       {/* eslint-disable-next-line @next/next/no-img-element */}
                       <img
@@ -41,8 +41,18 @@ export default function Projects() {
                       />
                       <div className="absolute inset-0 bg-scrim/0 group-hover:bg-scrim/40 transition-colors flex items-center justify-center">
                         <span className="opacity-0 group-hover:opacity-100 transition-opacity flex items-center gap-2 text-white bg-scrim/70 border border-line rounded-full px-4 py-2 text-sm">
-                          {hasVideo ? <Play size={14} /> : <Images size={14} />}
-                          {hasVideo ? "Watch demo" : `View gallery (${p.media.length})`}
+                          {p.caseStudyHref ? (
+                            <ArrowRight size={14} />
+                          ) : hasVideo ? (
+                            <Play size={14} />
+                          ) : (
+                            <Images size={14} />
+                          )}
+                          {p.caseStudyHref
+                            ? "Open case study"
+                            : hasVideo
+                            ? "Watch demo"
+                            : `View gallery (${p.media.length})`}
                         </span>
                       </div>
                     </div>
@@ -60,6 +70,16 @@ export default function Projects() {
                         ))}
                       </div>
                     </div>
+                  </>
+                );
+
+                return p.caseStudyHref ? (
+                  <Link key={p.slug} href={p.caseStudyHref} className={cardClass}>
+                    {cardBody}
+                  </Link>
+                ) : (
+                  <button key={p.slug} onClick={() => setActive(p)} className={cardClass}>
+                    {cardBody}
                   </button>
                 );
               })}
