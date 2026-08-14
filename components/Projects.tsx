@@ -27,7 +27,8 @@ export default function Projects() {
               {projects.map((p) => {
                 const cover = p.media[0];
                 const hasVideo = p.media.some((m) => m.type === "video");
-                const caseStudyHref = p.hasCaseStudy ? `/projects/${p.slug}` : undefined;
+                const caseStudyHref = p.caseStudyUrl ?? (p.hasCaseStudy ? `/projects/${p.slug}` : undefined);
+                const isExternal = !!p.caseStudyUrl;
                 const cardClass = p.comingSoon
                   ? "relative text-left bg-panel border border-line rounded-xl overflow-hidden cursor-default group"
                   : "relative text-left group bg-panel border border-line rounded-xl overflow-hidden hover:border-accent/60 transition-colors";
@@ -39,7 +40,7 @@ export default function Projects() {
                       <img
                         src={cover.type === "image" ? cover.src : cover.poster ?? cover.src}
                         alt={cover.alt}
-                        className="w-full h-full object-cover group-hover:scale-[1.03] transition-transform duration-300"
+                        className="w-full h-full object-cover object-top group-hover:scale-[1.03] transition-transform duration-300"
                       />
                       <div className="absolute inset-0 bg-scrim/0 group-hover:bg-scrim/40 transition-colors flex items-center justify-center">
                         <span className="opacity-0 group-hover:opacity-100 transition-opacity flex items-center gap-2 text-white bg-scrim/70 border border-line rounded-full px-4 py-2 text-sm">
@@ -100,6 +101,8 @@ export default function Projects() {
                         button stays clickable while the rest of the card still navigates. */}
                     <Link
                       href={caseStudyHref}
+                      target={isExternal ? "_blank" : undefined}
+                      rel={isExternal ? "noopener noreferrer" : undefined}
                       aria-label={`Open case study: ${p.title}`}
                       className="absolute inset-0 z-10"
                     />

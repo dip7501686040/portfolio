@@ -113,6 +113,8 @@ export type Project = {
   media: ProjectMedia[]
   /** When true, the project card links to /projects/{slug} instead of opening the gallery modal. */
   hasCaseStudy?: boolean
+  /** When set, the card links to this external URL instead of an internal case-study page or the gallery modal. */
+  caseStudyUrl?: string
   /** When true, the card shows a "coming soon" hover state instead of opening the gallery/case study. */
   comingSoon?: boolean
 }
@@ -137,6 +139,7 @@ export const projects: Project[] = [
       "A production admin panel where staff log per-customer GAVE/GOT (credit/debit) entries across multiple logbooks, with running balances calculated per customer. Access is controlled by a two-layer RBAC model — role-based menu permissions plus per-user, per-logbook CRUD permissions — with OTP-gated superadmin login and a database-driven navigation menu.",
     tags: ["Admin Panel", "Multi-Tenant", "RBAC"],
     tech: ["Next.js", "React", "NestJS", "Prisma", "PostgreSQL", "JWT", "Tailwind CSS", "Docker", "Kubernetes"],
-    media: [{ type: "image", src: "/projects/logbook-management-1.svg", alt: "Japshop logbook customer ledger admin panel" }]
+    media: [{ type: "image", src: "https://res.cloudinary.com/dhexmnaxl/image/upload/v1786688217/customers_page_n2ub6n.png", alt: "Japshop logbook customer ledger admin panel" }],
+    caseStudyUrl: "https://elfin-okra-67f.notion.site/Japshop-Admin-Panel-Daily-Financial-Logbook-2513c6505e4c803fbebafc1df857c54f?source=copy_link"
   }
 ]

@@ -8,6 +8,7 @@ import type { Project } from "@/lib/data"
 export default function ProjectModal({ project, onClose }: { project: Project; onClose: () => void }) {
   const [index, setIndex] = useState(0)
   const media = project.media[index]
+  const caseStudyHref = project.caseStudyUrl ?? (project.hasCaseStudy ? `/projects/${project.slug}` : undefined)
 
   useEffect(() => {
     const onKey = (e: KeyboardEvent) => {
@@ -34,8 +35,13 @@ export default function ProjectModal({ project, onClose }: { project: Project; o
             <video src={media.src} poster={media.poster} controls className="w-full h-full bg-black" />
           )}
 
-          {project.hasCaseStudy && (
-            <Link href={`/projects/${project.slug}`} className="group/cs absolute inset-0 z-10 flex items-center justify-center bg-scrim/0 hover:bg-scrim/40 transition-colors">
+          {caseStudyHref && (
+            <Link
+              href={caseStudyHref}
+              target={project.caseStudyUrl ? "_blank" : undefined}
+              rel={project.caseStudyUrl ? "noopener noreferrer" : undefined}
+              className="group/cs absolute inset-0 z-10 flex items-center justify-center bg-scrim/0 hover:bg-scrim/40 transition-colors"
+            >
               <span className="opacity-0 group-hover/cs:opacity-100 transition-opacity flex items-center gap-2 text-white bg-scrim/70 border border-line rounded-full px-4 py-2 text-sm">
                 <ArrowRight size={14} /> Open case study
               </span>
