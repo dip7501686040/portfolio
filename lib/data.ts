@@ -115,6 +115,10 @@ export type Project = {
   hasCaseStudy?: boolean
   /** When set, the card links to this external URL instead of an internal case-study page or the gallery modal. */
   caseStudyUrl?: string
+  /** Overrides the default "Open case study" hover label when caseStudyHref is set. */
+  ctaLabel?: string
+  /** When true, the project card also lists the tech stack below the tags. */
+  showTechOnCard?: boolean
   /** When true, the card shows a "coming soon" hover state instead of opening the gallery/case study. */
   comingSoon?: boolean
 }
@@ -141,5 +145,18 @@ export const projects: Project[] = [
     tech: ["Next.js", "React", "NestJS", "Prisma", "PostgreSQL", "JWT", "Tailwind CSS", "Docker", "Kubernetes"],
     media: [{ type: "image", src: "https://res.cloudinary.com/dhexmnaxl/image/upload/v1786688217/customers_page_n2ub6n.png", alt: "Japshop logbook customer ledger admin panel" }],
     caseStudyUrl: "https://elfin-okra-67f.notion.site/Japshop-Admin-Panel-Daily-Financial-Logbook-2513c6505e4c803fbebafc1df857c54f?source=copy_link"
+  },
+  {
+    slug: "school-management",
+    title: "School Management MVP",
+    summary: "School admissions platform with a multi-step application flow, a student portal, and an admin panel for reviewing enrollments.",
+    description:
+      "A full-stack MVP for school admissions and operations. Prospective students submit applications through a multi-step form (student details, contact info, review) and track status from a personal dashboard, while admins sign in to a dedicated panel to review stats, manage the applications queue, and approve or reject enrollments. Built with Next.js App Router and Radix UI primitives for accessible dialogs, dropdowns, and tabs.",
+    tags: ["Education", "Admin Panel", "Full Stack"],
+    tech: ["Next.js", "React", "TypeScript", "Tailwind CSS", "Radix UI", "React Hook Form"],
+    media: [{ type: "image", src: "https://res.cloudinary.com/dhexmnaxl/image/upload/v1786713310/dashboard_upzoqt.png", alt: "School management admin dashboard" }],
+    caseStudyUrl: "https://school-mgt-mvp.vercel.app",
+    ctaLabel: "See live demo",
+    showTechOnCard: true
   }
 ]

@@ -56,7 +56,7 @@ export default function Projects() {
                           {p.comingSoon
                             ? "Case study coming soon"
                             : caseStudyHref
-                            ? "Open case study"
+                            ? p.ctaLabel ?? "Open case study"
                             : hasVideo
                             ? "Watch demo"
                             : `View gallery (${p.media.length})`}
@@ -86,6 +86,18 @@ export default function Projects() {
                           </span>
                         ))}
                       </div>
+                      {p.showTechOnCard && (
+                        <div className="flex flex-wrap gap-2 mt-3">
+                          {p.tech.map((t) => (
+                            <span
+                              key={t}
+                              className="text-xs font-mono text-muted bg-panel2 border border-line rounded px-2 py-1"
+                            >
+                              {t}
+                            </span>
+                          ))}
+                        </div>
+                      )}
                     </div>
                   </>
                 );

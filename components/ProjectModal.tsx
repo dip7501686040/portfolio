@@ -43,7 +43,7 @@ export default function ProjectModal({ project, onClose }: { project: Project; o
               className="group/cs absolute inset-0 z-10 flex items-center justify-center bg-scrim/0 hover:bg-scrim/40 transition-colors"
             >
               <span className="opacity-0 group-hover/cs:opacity-100 transition-opacity flex items-center gap-2 text-white bg-scrim/70 border border-line rounded-full px-4 py-2 text-sm">
-                <ArrowRight size={14} /> Open case study
+                <ArrowRight size={14} /> {project.ctaLabel ?? "Open case study"}
               </span>
             </Link>
           )}
