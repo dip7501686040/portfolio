@@ -1,0 +1,64 @@
+/**
+ * Public proof data pulled from the private Personal Growth app
+ * (`/api/public/*`). Only content/features explicitly marked public there are
+ * ever returned. Fetched with ISR (hourly) so the portfolio has no runtime
+ * dependency on the private app being up.
+ */
+const API =
+  process.env.NEXT_PUBLIC_GROWTH_API_URL?.replace(/\/$/, "") ??
+  "http://localhost:3000";
+
+export interface PublicFeature {
+  projectSlug: string;
+  featureSlug: string;
+  projectName: string;
+  repoUrl: string | null;
+  liveUrl: string | null;
+  title: string;
+  description: string | null;
+  status: string;
+  demoVideoUrl: string | null;
+  codePaths: Record<string, string> | null;
+}
+
+export interface PublicContentItem {
+  slug: string;
+  title: string;
+  hook: string | null;
+  angle: string | null;
+  body: string | null;
+  assetType: string | null;
+  publishedUrls: Record<string, string> | null;
+  skills: string[];
+  features: string[];
+}
+
+async function fetchJson<T>(path: string): Promise<T | null> {
+  try {
+    const res = await fetch(`${API}${path}`, { next: { revalidate: 3600 } });
+    if (!res.ok) return null;
+    return (await res.json()) as T;
+  } catch {
+    return null;
+  }
+}
+
+export async function getPublicFeatures(): Promise<PublicFeature[]> {
+  return (
+    (await fetchJson<{ features: PublicFeature[] }>("/api/public/features"))
+      ?.features ?? []
+  );
+}
+
+export async function getPublicContent(): Promise<PublicContentItem[]> {
+  return (
+    (await fetchJson<{ items: PublicContentItem[] }>("/api/public/content"))
+      ?.items ?? []
+  );
+}
+
+/** Resolve a repo path key to a GitHub tree URL. */
+export function codeUrl(repoUrl: string | null, path: string): string | null {
+  if (!repoUrl) return null;
+  return `${repoUrl.replace(/\/$/, "")}/tree/main/${path.replace(/^\//, "")}`;
+}
