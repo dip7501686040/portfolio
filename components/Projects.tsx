@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 import Link from "next/link";
-import { Play, Images, ArrowRight, Clock, Maximize2 } from "lucide-react";
+import { Play, Images, ArrowRight, Maximize2 } from "lucide-react";
 import { projects, type Project } from "@/lib/data";
 import ProjectModal from "./ProjectModal";
 
@@ -29,9 +29,8 @@ export default function Projects() {
                 const hasVideo = p.media.some((m) => m.type === "video");
                 const caseStudyHref = p.caseStudyUrl ?? (p.hasCaseStudy ? `/projects/${p.slug}` : undefined);
                 const isExternal = !!p.caseStudyUrl;
-                const cardClass = p.comingSoon
-                  ? "relative text-left bg-panel border border-line rounded-xl overflow-hidden cursor-default group"
-                  : "relative text-left group bg-panel border border-line rounded-xl overflow-hidden hover:border-accent/60 transition-colors";
+                const cardClass =
+                  "relative text-left group bg-panel border border-line rounded-xl overflow-hidden hover:border-accent/60 transition-colors";
 
                 const cardBody = (
                   <>
@@ -44,18 +43,14 @@ export default function Projects() {
                       />
                       <div className="absolute inset-0 bg-scrim/0 group-hover:bg-scrim/40 transition-colors flex items-center justify-center">
                         <span className="opacity-0 group-hover:opacity-100 transition-opacity flex items-center gap-2 text-white bg-scrim/70 border border-line rounded-full px-4 py-2 text-sm">
-                          {p.comingSoon ? (
-                            <Clock size={14} />
-                          ) : caseStudyHref ? (
+                          {caseStudyHref ? (
                             <ArrowRight size={14} />
                           ) : hasVideo ? (
                             <Play size={14} />
                           ) : (
                             <Images size={14} />
                           )}
-                          {p.comingSoon
-                            ? "Case study coming soon"
-                            : caseStudyHref
+                          {caseStudyHref
                             ? p.ctaLabel ?? "Open case study"
                             : hasVideo
                             ? "Watch demo"
@@ -102,11 +97,7 @@ export default function Projects() {
                   </>
                 );
 
-                return p.comingSoon ? (
-                  <div key={p.slug} className={cardClass}>
-                    {cardBody}
-                  </div>
-                ) : caseStudyHref ? (
+                return caseStudyHref ? (
                   <div key={p.slug} className={cardClass}>
                     {cardBody}
                     {/* Stretched link: sits below the zoom button (z-10 < z-20) so the
