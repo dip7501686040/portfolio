@@ -1,8 +1,28 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { X } from "lucide-react";
+import { Github, X } from "lucide-react";
 import type { ContentCard } from "@/lib/data";
+
+function CodeLinks({ code }: { code: ContentCard["code"] }) {
+  if (!code || code.links.length === 0) return null;
+  return (
+    <div className="flex flex-wrap gap-x-3 gap-y-1">
+      {code.links.map((l) => (
+        <a
+          key={l.url}
+          href={l.url}
+          target="_blank"
+          rel="noopener noreferrer"
+          onClick={(e) => e.stopPropagation()}
+          className="inline-flex items-center gap-1 text-xs font-medium text-accent hover:underline"
+        >
+          <Github size={12} /> {l.label}
+        </a>
+      ))}
+    </div>
+  );
+}
 
 function Lightbox({ card, onClose }: { card: ContentCard; onClose: () => void }) {
   useEffect(() => {
@@ -55,10 +75,13 @@ function Lightbox({ card, onClose }: { card: ContentCard; onClose: () => void })
             <X size={18} />
           </button>
         </div>
-        <div className="p-6">
-          <div className="eyebrow mb-2">{card.kind}</div>
-          <h3 className="font-display text-xl text-ink">{card.title}</h3>
-          <p className="text-muted mt-2 leading-relaxed">{card.caption}</p>
+        <div className="p-6 flex flex-col gap-3">
+          <div>
+            <div className="eyebrow mb-2">{card.kind}</div>
+            <h3 className="font-display text-xl text-ink">{card.title}</h3>
+            <p className="text-muted mt-2 leading-relaxed">{card.caption}</p>
+          </div>
+          <CodeLinks code={card.code} />
         </div>
       </div>
     </div>
@@ -104,9 +127,12 @@ export default function ContentGrid({ content }: { content: ContentCard[] }) {
                 <p className="text-sm text-muted mt-2 leading-relaxed flex-1">
                   {card.caption}
                 </p>
-                <span className="mt-4 self-start text-sm font-medium text-accent">
-                  {card.kind === "video" ? "Play" : "View"}
-                </span>
+                <div className="mt-4 flex flex-wrap items-center gap-4">
+                  <span className="text-sm font-medium text-accent">
+                    {card.kind === "video" ? "Play" : "View"}
+                  </span>
+                  <CodeLinks code={card.code} />
+                </div>
               </div>
             </button>
           ))}

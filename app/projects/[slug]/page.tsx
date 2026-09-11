@@ -3,7 +3,7 @@ import Link from "next/link";
 import { notFound } from "next/navigation";
 import { ArrowLeft, Github, ExternalLink } from "lucide-react";
 import { projects, type ContentCard } from "@/lib/data";
-import { getPublicFeatures, getPublicMedia } from "@/lib/proof";
+import { getPublicContentCards } from "@/lib/proof";
 import ContentGrid from "@/components/case-study/ContentGrid";
 import Footer from "@/components/Footer";
 
@@ -42,22 +42,17 @@ export default async function ProjectCaseStudyPage({
   if (!project) notFound();
   const cs = project.caseStudy!;
 
-  const [features, media] = await Promise.all([
-    getPublicFeatures(),
-    getPublicMedia(),
-  ]);
-  const titleFor = (featureKey: string) =>
-    features.find((f) => f.projectSlug === slug && f.featureSlug === featureKey)
-      ?.title ?? featureKey;
-  const liveCards: ContentCard[] = media
-    .filter((m) => m.projectSlug === slug)
-    .map((m) => ({
-      featureKey: m.featureKey,
-      title: titleFor(m.featureKey),
-      kind: m.kind,
-      src: m.kind === "video" ? m.videoUrl ?? m.url : m.url,
-      poster: m.kind === "video" ? m.url : undefined,
-      caption: m.caption,
+  const allCards = await getPublicContentCards();
+  const liveCards: ContentCard[] = allCards
+    .filter((c) => c.projectSlug === slug)
+    .map((c) => ({
+      featureKey: c.featureSlug ?? c.id,
+      title: c.title,
+      kind: c.kind,
+      src: c.kind === "video" ? c.videoUrl ?? c.url : c.url,
+      poster: c.kind === "video" ? c.url : undefined,
+      caption: c.caption ?? "",
+      code: c.code,
     }));
   const seen = new Set(liveCards.map((c) => `${c.featureKey}:${c.src}`));
   const content = [

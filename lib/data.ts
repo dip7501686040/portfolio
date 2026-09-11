@@ -114,6 +114,9 @@ export type ContentCard = {
   src: string // Cloudinary delivery URL
   poster?: string // for video
   caption: string
+  /** the linked feature's GitHub reference, resolved by the Personal Growth
+   *  app (Group C) — omitted when the card has no linked feature. */
+  code?: { repoUrl: string | null; links: { label: string; url: string }[] } | null
 }
 
 export type CaseStudy = {

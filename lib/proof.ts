@@ -82,3 +82,27 @@ export function codeUrl(repoUrl: string | null, path: string): string | null {
   if (!repoUrl) return null;
   return `${repoUrl.replace(/\/$/, "")}/tree/main/${path.replace(/^\//, "")}`;
 }
+
+export interface PublicContentCard {
+  id: string;
+  title: string;
+  caption: string | null;
+  kind: "video" | "screenshot" | "diagram";
+  url: string; // display image (poster frame for a video)
+  videoUrl: string | null; // set only when kind === "video"
+  projectSlug: string | null;
+  featureSlug: string | null; // == PublicFeature.featureSlug
+  code: { repoUrl: string | null; links: { label: string; url: string }[] } | null;
+}
+
+/**
+ * The portfolio's real source of truth for deep-dive cards — curated in the
+ * Personal Growth app's /content page (Group C), not baked into this repo.
+ * Supersedes getPublicMedia() for rendering; that one stays for internal use.
+ */
+export async function getPublicContentCards(): Promise<PublicContentCard[]> {
+  return (
+    (await fetchJson<{ cards: PublicContentCard[] }>("/api/public/content-cards"))
+      ?.cards ?? []
+  );
+}
