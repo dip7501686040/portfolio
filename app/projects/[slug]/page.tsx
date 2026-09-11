@@ -2,11 +2,17 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import { ArrowLeft, Github, ExternalLink } from "lucide-react";
-import { projects } from "@/lib/data";
+import { projects, type ContentCard } from "@/lib/data";
+import { getPublicFeatures, getPublicMedia } from "@/lib/proof";
 import ContentGrid from "@/components/case-study/ContentGrid";
 import Footer from "@/components/Footer";
 
 const withCaseStudy = projects.filter((p) => p.caseStudy);
+
+// Re-check for new visual proof periodically — `pnpm media upload` in the
+// Personal Growth repo mirrors to R2, so a new card can show up here without
+// a portfolio deploy.
+export const revalidate = 3600;
 
 export function generateStaticParams() {
   return withCaseStudy.map((p) => ({ slug: p.slug }));
@@ -35,6 +41,29 @@ export default async function ProjectCaseStudyPage({
   const project = withCaseStudy.find((p) => p.slug === slug);
   if (!project) notFound();
   const cs = project.caseStudy!;
+
+  const [features, media] = await Promise.all([
+    getPublicFeatures(),
+    getPublicMedia(),
+  ]);
+  const titleFor = (featureKey: string) =>
+    features.find((f) => f.projectSlug === slug && f.featureSlug === featureKey)
+      ?.title ?? featureKey;
+  const liveCards: ContentCard[] = media
+    .filter((m) => m.projectSlug === slug)
+    .map((m) => ({
+      featureKey: m.featureKey,
+      title: titleFor(m.featureKey),
+      kind: m.kind,
+      src: m.kind === "video" ? m.videoUrl ?? m.url : m.url,
+      poster: m.kind === "video" ? m.url : undefined,
+      caption: m.caption,
+    }));
+  const seen = new Set(liveCards.map((c) => `${c.featureKey}:${c.src}`));
+  const content = [
+    ...liveCards,
+    ...cs.content.filter((c) => !seen.has(`${c.featureKey}:${c.src}`)),
+  ];
 
   return (
     <main>
@@ -121,7 +150,7 @@ export default async function ProjectCaseStudyPage({
         </section>
       )}
 
-      <ContentGrid content={cs.content} />
+      <ContentGrid content={content} />
 
       <Footer />
     </main>

@@ -57,6 +57,26 @@ export async function getPublicContent(): Promise<PublicContentItem[]> {
   );
 }
 
+export interface PublicMediaItem {
+  projectSlug: string;
+  featureKey: string; // == PublicFeature.featureSlug
+  kind: "video" | "screenshot" | "diagram";
+  url: string; // display image (poster frame for a video)
+  videoUrl: string | null; // set only when kind === "video"
+  caption: string;
+  width: number | null;
+  height: number | null;
+}
+
+/** Visual proof — uploaded via `pnpm media upload` in the Personal Growth
+ *  repo, mirrored to R2 there so this shows up without a portfolio deploy. */
+export async function getPublicMedia(): Promise<PublicMediaItem[]> {
+  return (
+    (await fetchJson<{ items: PublicMediaItem[] }>("/api/public/media"))
+      ?.items ?? []
+  );
+}
+
 /** Resolve a repo path key to a GitHub tree URL. */
 export function codeUrl(repoUrl: string | null, path: string): string | null {
   if (!repoUrl) return null;
