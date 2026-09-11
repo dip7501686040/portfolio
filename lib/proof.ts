@@ -93,6 +93,9 @@ export interface PublicContentCard {
   projectSlug: string | null;
   featureSlug: string | null; // == PublicFeature.featureSlug
   code: { repoUrl: string | null; links: { label: string; url: string }[] } | null;
+  /** "ui" (what a user sees) or "terminal" (the code/execution behind it) —
+   *  a feature can have one of each, forming one proof cycle. */
+  role: "ui" | "terminal";
 }
 
 /**

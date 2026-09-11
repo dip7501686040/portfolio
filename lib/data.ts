@@ -115,6 +115,9 @@ export type ContentCard = {
   /** the linked feature's GitHub reference, resolved by the Personal Growth
    *  app (Group C) — omitted when the card has no linked feature. */
   code?: { repoUrl: string | null; links: { label: string; url: string }[] } | null
+  /** "ui" (what a user sees) or "terminal" (the code/execution behind it) —
+   *  a feature can carry one of each, presented together as one cycle. */
+  role?: "ui" | "terminal"
 }
 
 export type CaseStudy = {

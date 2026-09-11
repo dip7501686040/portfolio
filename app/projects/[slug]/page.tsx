@@ -60,6 +60,7 @@ export default async function ProjectCaseStudyPage({
       poster: c.kind === "video" ? c.url : undefined,
       caption: c.caption ?? "",
       code: c.code,
+      role: c.role,
     }));
 
   return (
