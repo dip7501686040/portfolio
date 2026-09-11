@@ -96,8 +96,6 @@ export const experience = [
   }
 ]
 
-import { coverDataUri } from "./case-study-cover"
-
 export type ProjectMedia = {
   type: "image" | "video"
   src: string
@@ -149,130 +147,24 @@ export type Project = {
   caseStudy?: CaseStudy
 }
 
-export const projects: Project[] = [
-  {
-    slug: "ai-notification-system",
-    title: "AI-Powered Event-Driven Notification System",
-    summary: "Cloud-native notification platform with an AI-assisted decision engine for intelligent, multi-channel routing.",
-    description:
-      "A microservices platform that routes notifications across channels using an AI-assisted decision engine. Services communicate over gRPC and RabbitMQ, run on Kubernetes, and are fully observable with OpenTelemetry, backed by PostgreSQL and Redis.",
-    tags: ["AI", "Microservices", "Event-Driven"],
-    tech: ["Node.js", "TypeScript", "NestJS", "gRPC", "RabbitMQ", "PostgreSQL", "Redis", "OpenAI", "Docker", "Kubernetes", "OpenTelemetry"],
-    media: [{ type: "image", src: "https://res.cloudinary.com/dhexmnaxl/image/upload/v1786515486/ChatGPT_Image_Aug_12_2026_11_44_02_AM_hdggrp.png", alt: "Notification platform architecture diagram" }],
-    hasCaseStudy: true
-  },
-  {
-    slug: "personal-growth-ai-os",
-    title: "Personal Growth AI OS",
-    summary: "A private system that distills real engineering work into a proof-of-skills knowledge graph feeding career, content, and learning agents.",
-    description:
-      "Next.js 16 + Supabase (Drizzle, RLS). Real engineering work is ingested into a pgvector RAG knowledge graph with cross-source duplicate detection and deterministic entity linking; eight structured LLM agents run over it behind a provider ladder. A deterministic retrieval endpoint maps any role's requirements to proof from shipped features.",
-    tags: ["AI", "RAG", "Agents"],
-    tech: ["Next.js 16", "TypeScript", "PostgreSQL", "pgvector", "Drizzle", "LangGraph", "OpenAI / Anthropic", "Cloudflare R2"],
-    media: [{ type: "image", src: coverDataUri("Personal Growth AI OS"), alt: "Personal Growth AI OS" }],
-    hasCaseStudy: true,
-    caseStudy: {
-      tagline: "A proof-of-skills knowledge graph, and the agents that run on it.",
-      problem:
-        "Career, content and learning tools don't know what you've actually built. Résumés and profiles drift from reality, and the proof of a skill lives scattered across repos, PRs and demos.",
-      solution:
-        "A private system that ingests real engineering work into a pgvector RAG knowledge graph with deterministic entity linking, then runs eight structured LLM agents (career, content, learning, …) over it behind a provider ladder. A deterministic proof-of-work endpoint — exposed over MCP — maps a role's requirements to matching shipped features.",
-      highlights: [
-        "Next.js 16 App Router + Supabase Postgres (Drizzle, RLS); pgvector RAG knowledge base with cross-source duplicate detection and deterministic entity linking.",
-        "Eight structured LLM agents behind a provider-ladder abstraction (Gemini / OpenAI / Anthropic) with automatic fallback; a LangGraph extraction agent.",
-        "A deterministic proof-of-work retrieval endpoint (over MCP) that maps role requirements to shipped features.",
-        "Cloudflare R2-backed application pipeline: assisted browser form-fill, Gmail-draft outreach, per-job multi-channel tracking.",
-      ],
-      links: [
-        { label: "View source", url: "https://github.com/dip7501686040/personal-growth-ai-os" },
-      ],
-      content: [],
-    },
-  },
-  {
-    slug: "platform-infrastructure",
-    title: "Platform Infrastructure — Terraform + local AWS",
-    summary: "A reproducible AWS-shaped Kubernetes runtime defined in Terraform and brought up by a serial, idempotent chain.",
-    description:
-      "Terraform modules describe an AWS-shaped runtime (EKS / ECR / ELBv2) that a serial, idempotent bring-up chain provisions locally — two clusters with cross-cluster networking, a self-hosted GitHub Actions apply pipeline, a self-healing CPU-arbitration watchdog, and an observability stack provisioned as containers.",
-    tags: ["Infrastructure", "Terraform", "Kubernetes"],
-    tech: ["Terraform", "AWS", "EKS", "Kubernetes", "GitHub Actions", "Prometheus", "Grafana", "Bash"],
-    media: [{ type: "image", src: coverDataUri("Platform Infrastructure"), alt: "Platform Infrastructure" }],
-    hasCaseStudy: true,
-    caseStudy: {
-      tagline: "A realistic multi-cluster Kubernetes environment, with no cloud bill.",
-      problem:
-        "Standing up a realistic multi-cluster Kubernetes environment for development shouldn't require a cloud bill or an afternoon of manual steps — and it should tear down and rebuild the same way every time.",
-      solution:
-        "Terraform modules describe an AWS-shaped runtime (EKS / ECR / ELBv2). A serial, idempotent bring-up chain provisions it locally with cross-cluster networking, a self-hosted GitHub Actions apply pipeline, a self-healing CPU-arbitration watchdog with a minimal-touch restart reconcile, and a Prometheus / Grafana stack provisioned as containers.",
-      highlights: [
-        "Reusable AWS Terraform modules (ECR / EKS / network); local AWS emulation with a dual-target graph; ALB fronting via ELBv2 emulation.",
-        "Serial, idempotent cluster bring-up chain; two-cluster topology with cross-cluster networking.",
-        "Self-hosted GitHub Actions apply pipeline; CPU arbitration & self-healing watchdog with a minimal-touch restart reconcile.",
-        "Observability stack (Prometheus / Grafana) provisioned as containers.",
-      ],
-      links: [
-        { label: "View source", url: "https://github.com/dip7501686040/platform-infrastructure" },
-      ],
-      content: [],
-    },
-  },
-  {
-    slug: "platform-gitops",
-    title: "Platform GitOps — Helm + ArgoCD delivery",
-    summary: "Reproducible, auditable Kubernetes delivery for a 13-service platform: every change to what runs in the cluster is a git commit ArgoCD reconciles.",
-    description:
-      "One shared Helm chart templates 11 NestJS services, layered with per-service / per-environment values. ArgoCD auto-syncs from git with a bounded RollingSync ApplicationSet; database migrations run as an ArgoCD PreSync hook keyed by a schema hash; a Helm-managed Jenkins pipeline builds images and commits the tag bump back.",
-    tags: ["GitOps", "Kubernetes", "CI/CD"],
-    tech: ["Helm", "ArgoCD", "Kubernetes", "Jenkins", "GitOps"],
-    media: [{ type: "image", src: coverDataUri("Platform GitOps"), alt: "Platform GitOps" }],
-    hasCaseStudy: true,
-    caseStudy: {
-      tagline: "Every change to the cluster is a git commit ArgoCD reconciles.",
-      problem:
-        "A multi-service platform needs releases that are auditable and reproducible — and a multi-service release shouldn't spike the cluster when many charts change at once.",
-      solution:
-        "One shared Helm chart templates 11 NestJS services, layered with per-service, per-environment values. ArgoCD auto-syncs from git with a bounded RollingSync ApplicationSet (maxUpdate 1). DB migrations run as an ArgoCD PreSync hook Job keyed by a schema hash — an unchanged schema is a no-op. Jenkins, itself a Helm-managed workload, builds each image and commits the tag bump back for ArgoCD.",
-      highlights: [
-        "One shared Helm chart for 11 NestJS services; per-service, per-environment values layering.",
-        "ArgoCD GitOps auto-sync with a bounded RollingSync ApplicationSet so a multi-service release doesn't spike CPU.",
-        "Database migrations as an ArgoCD PreSync hook, keyed by a schema hash.",
-        "Jenkins as a Helm-managed Kubernetes workload; builds and pushes each image and commits the tag bump.",
-      ],
-      links: [
-        { label: "View source", url: "https://github.com/dip7501686040/platform-gitops" },
-      ],
-      content: [],
-    },
-  },
-  {
-    slug: "portfolio",
-    title: "This Portfolio",
-    summary: "A Next.js portfolio with case studies and a project catalog, with /proof and /work pages backed by the Personal Growth public API.",
-    description:
-      "Next.js App Router site: a resume-derived home page, a project catalog with a media lightbox, multi-theme support, and /proof + /work pages that render shipped features and skills straight from the Personal Growth AI OS public API. Per-project content cards are fed from a Cloudinary-hosted media manifest.",
-    tags: ["Portfolio", "Next.js"],
-    tech: ["Next.js", "React", "TypeScript", "Tailwind CSS", "Framer Motion"],
-    media: [{ type: "image", src: coverDataUri("This Portfolio"), alt: "Portfolio" }],
-    hasCaseStudy: true,
-    caseStudy: {
-      tagline: "A portfolio that renders verifiable proof from a live API.",
-      problem:
-        "A portfolio should show verifiable proof, not just claims — and stay current without hand-editing every time something ships.",
-      solution:
-        "A Next.js App Router site with case studies and a project catalog with a media lightbox. The /proof and /work pages are backed by the Personal Growth AI OS public API, so shipped features and skills render directly from the knowledge graph. Per-project deep-dive cards are fed from a Cloudinary-hosted media manifest.",
-      highlights: [
-        "Next.js App Router; resume-derived home page; project catalog with a media lightbox; multi-theme support (dark / light / gradient).",
-        "/proof and /work pages backed by the Personal Growth public API.",
-        "Per-project content cards fed from a Cloudinary media manifest.",
-      ],
-      links: [
-        { label: "View source", url: "https://github.com/dip7501686040/portfolio" },
-        { label: "Live", url: "https://dipankarsaha.vercel.app" },
-      ],
-      content: [],
-    },
-  },
+/**
+ * Group P: this used to be a static array of every project. It's gone —
+ * the Personal Growth app's /projects page is now the source of truth for
+ * anything tracked there (fetched live in Projects.tsx / [slug]/page.tsx via
+ * getPublicProjects()). What's left here are the handful of client/freelance
+ * projects that were never part of that knowledge graph to begin with (no
+ * repo sync, no proof-of-work concept) — they link straight to an external
+ * case study/demo, so there's no page in this repo to keep in sync either.
+ */
+
+/** Hand-picked hero images for the few live-fetched projects worth a real
+ *  cover instead of the generated placeholder. Keyed by slug. */
+export const manualCovers: Record<string, string> = {
+  "ai-notification-system":
+    "https://res.cloudinary.com/dhexmnaxl/image/upload/v1786515486/ChatGPT_Image_Aug_12_2026_11_44_02_AM_hdggrp.png",
+}
+
+export const externalProjects: Project[] = [
   {
     slug: "logbook-management",
     title: "Japshop Admin Panel — Daily Financial Logbook",

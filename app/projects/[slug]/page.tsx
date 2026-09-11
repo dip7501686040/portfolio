@@ -2,20 +2,19 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import { ArrowLeft, Github, ExternalLink } from "lucide-react";
-import { projects, type ContentCard } from "@/lib/data";
-import { getPublicContentCards } from "@/lib/proof";
+import type { ContentCard } from "@/lib/data";
+import { getPublicContentCards, getPublicProjects } from "@/lib/proof";
 import ContentGrid from "@/components/case-study/ContentGrid";
 import Footer from "@/components/Footer";
 
-const withCaseStudy = projects.filter((p) => p.caseStudy);
-
-// Re-check for new visual proof periodically — `pnpm media upload` in the
-// Personal Growth repo mirrors to R2, so a new card can show up here without
-// a portfolio deploy.
+// Re-check periodically — the Personal Growth app's /projects and /content
+// pages are the source of truth; nothing here needs a portfolio deploy.
 export const revalidate = 3600;
+export const dynamicParams = true;
 
-export function generateStaticParams() {
-  return withCaseStudy.map((p) => ({ slug: p.slug }));
+export async function generateStaticParams() {
+  const all = await getPublicProjects();
+  return all.map((p) => ({ slug: p.slug }));
 }
 
 export async function generateMetadata({
@@ -24,11 +23,12 @@ export async function generateMetadata({
   params: Promise<{ slug: string }>;
 }): Promise<Metadata> {
   const { slug } = await params;
-  const project = withCaseStudy.find((p) => p.slug === slug);
+  const all = await getPublicProjects();
+  const project = all.find((p) => p.slug === slug);
   if (!project) return { title: "Case study" };
   return {
-    title: `${project.title} — Case Study`,
-    description: project.caseStudy!.tagline,
+    title: `${project.name} — Case Study`,
+    description: project.tagline,
   };
 }
 
@@ -38,12 +38,19 @@ export default async function ProjectCaseStudyPage({
   params: Promise<{ slug: string }>;
 }) {
   const { slug } = await params;
-  const project = withCaseStudy.find((p) => p.slug === slug);
+  const [all, allCards] = await Promise.all([
+    getPublicProjects(),
+    getPublicContentCards(),
+  ]);
+  const project = all.find((p) => p.slug === slug);
   if (!project) notFound();
-  const cs = project.caseStudy!;
 
-  const allCards = await getPublicContentCards();
-  const liveCards: ContentCard[] = allCards
+  const links = [
+    ...(project.repoUrl ? [{ label: "View source", url: project.repoUrl }] : []),
+    ...(project.liveUrl ? [{ label: "Live", url: project.liveUrl }] : []),
+  ];
+
+  const content: ContentCard[] = allCards
     .filter((c) => c.projectSlug === slug)
     .map((c) => ({
       featureKey: c.featureSlug ?? c.id,
@@ -54,11 +61,6 @@ export default async function ProjectCaseStudyPage({
       caption: c.caption ?? "",
       code: c.code,
     }));
-  const seen = new Set(liveCards.map((c) => `${c.featureKey}:${c.src}`));
-  const content = [
-    ...liveCards,
-    ...cs.content.filter((c) => !seen.has(`${c.featureKey}:${c.src}`)),
-  ];
 
   return (
     <main>
@@ -75,11 +77,11 @@ export default async function ProjectCaseStudyPage({
 
           <div className="flex flex-wrap items-center gap-4">
             <h1 className="font-display font-bold text-4xl sm:text-5xl leading-[1.05] tracking-tight text-ink max-w-3xl">
-              {project.title}
+              {project.name}
             </h1>
-            {cs.links.length > 0 && (
+            {links.length > 0 && (
               <div className="flex flex-wrap items-center gap-3">
-                {cs.links.map((l) => (
+                {links.map((l) => (
                   <a
                     key={l.url}
                     href={l.url}
@@ -100,7 +102,7 @@ export default async function ProjectCaseStudyPage({
           </div>
 
           <p className="mt-4 max-w-2xl text-muted text-base sm:text-lg leading-relaxed">
-            {cs.tagline}
+            {project.tagline}
           </p>
 
           <div className="flex flex-wrap gap-2 mt-6">
@@ -116,25 +118,31 @@ export default async function ProjectCaseStudyPage({
         </div>
       </header>
 
-      <section className="section-pad border-b border-line">
-        <div className="mx-auto max-w-[1600px] px-6 lg:px-10 grid sm:grid-cols-2 gap-8">
-          <div>
-            <div className="eyebrow mb-3">problem</div>
-            <p className="text-ink leading-relaxed max-w-2xl">{cs.problem}</p>
+      {(project.problemSolved || project.architecture) && (
+        <section className="section-pad border-b border-line">
+          <div className="mx-auto max-w-[1600px] px-6 lg:px-10 grid sm:grid-cols-2 gap-8">
+            {project.problemSolved && (
+              <div>
+                <div className="eyebrow mb-3">problem</div>
+                <p className="text-ink leading-relaxed max-w-2xl">{project.problemSolved}</p>
+              </div>
+            )}
+            {project.architecture && (
+              <div>
+                <div className="eyebrow mb-3">solution</div>
+                <p className="text-ink leading-relaxed max-w-2xl">{project.architecture}</p>
+              </div>
+            )}
           </div>
-          <div>
-            <div className="eyebrow mb-3">solution</div>
-            <p className="text-ink leading-relaxed max-w-2xl">{cs.solution}</p>
-          </div>
-        </div>
-      </section>
+        </section>
+      )}
 
-      {cs.highlights.length > 0 && (
+      {project.highlights.length > 0 && (
         <section className="section-pad border-b border-line">
           <div className="mx-auto max-w-[1600px] px-6 lg:px-10">
             <div className="eyebrow mb-3">highlights</div>
             <ul className="mt-2 space-y-3 max-w-3xl">
-              {cs.highlights.map((h) => (
+              {project.highlights.map((h) => (
                 <li key={h} className="flex gap-3 text-ink leading-relaxed">
                   <span className="mt-2 h-1.5 w-1.5 shrink-0 rounded-full bg-accent" />
                   <span>{h}</span>

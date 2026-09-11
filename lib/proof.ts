@@ -106,3 +106,29 @@ export async function getPublicContentCards(): Promise<PublicContentCard[]> {
       ?.cards ?? []
   );
 }
+
+export interface PublicProject {
+  slug: string;
+  name: string;
+  tagline: string;
+  description: string | null;
+  problemSolved: string | null;
+  architecture: string | null;
+  highlights: string[];
+  repoUrl: string | null;
+  liveUrl: string | null;
+  tech: string[];
+}
+
+/**
+ * The portfolio's project catalog, live from the Personal Growth app's
+ * /projects page (Group P) — nothing about a tracked project is maintained
+ * in this repo. See lib/data.ts's externalProjects for the small set of
+ * client projects that were never part of that knowledge graph.
+ */
+export async function getPublicProjects(): Promise<PublicProject[]> {
+  return (
+    (await fetchJson<{ projects: PublicProject[] }>("/api/public/projects"))
+      ?.projects ?? []
+  );
+}

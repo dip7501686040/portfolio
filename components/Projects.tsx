@@ -3,10 +3,10 @@
 import { useState } from "react";
 import Link from "next/link";
 import { Play, Images, ArrowRight, Maximize2 } from "lucide-react";
-import { projects, type Project } from "@/lib/data";
+import type { Project } from "@/lib/data";
 import ProjectModal from "./ProjectModal";
 
-export default function Projects() {
+export default function Projects({ projects }: { projects: Project[] }) {
   const [active, setActive] = useState<Project | null>(null);
 
   return (
