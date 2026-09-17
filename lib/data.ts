@@ -164,6 +164,7 @@ export type Project = {
  *  cover instead of the generated placeholder. Keyed by slug. */
 export const manualCovers: Record<string, string> = {
   "personal-growth-ai-os": "/projects/personal-growth-ai-os-1.png",
+  portfolio: "/projects/portfolio-1.png",
   "ai-notification-system":
     "https://res.cloudinary.com/dhexmnaxl/image/upload/v1786515486/ChatGPT_Image_Aug_12_2026_11_44_02_AM_hdggrp.png",
 }
