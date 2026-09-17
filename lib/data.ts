@@ -1,6 +1,6 @@
 export const profile = {
   name: "Dipankar Saha",
-  title: "Senior Backend / Full Stack Engineer | AI & Distributed Systems",
+  title: "Senior AI/LLM Engineer | Backend & Distributed Systems",
   location: "Kolkata, India",
   availability: "Open to remote & relocation",
   email: "dip7501686040@gmail.com",
@@ -21,12 +21,12 @@ export const stats = [
 
 export const skillGroups = [
   {
-    label: "Backend",
-    skills: ["Node.js", "NestJS", "TypeScript", "REST APIs", "GraphQL", "gRPC", "JWT", "OAuth2"]
+    label: "AI & LLM",
+    skills: ["OpenAI API Integration", "RAG (pgvector)", "LangGraph Agents", "Generative AI", "Prompt Engineering", "LLM-based Workflow Design"]
   },
   {
-    label: "Frontend",
-    skills: ["React.js", "Next.js", "JavaScript (ES6+)", "Tailwind CSS"]
+    label: "Backend",
+    skills: ["Node.js", "NestJS", "TypeScript", "REST APIs", "GraphQL", "gRPC", "JWT", "OAuth2"]
   },
   {
     label: "Databases",
@@ -37,16 +37,16 @@ export const skillGroups = [
     skills: ["RabbitMQ", "Event-Driven Architecture", "Microservices Design"]
   },
   {
-    label: "AI & LLM",
-    skills: ["OpenAI API Integration", "Generative AI", "Prompt Engineering", "LLM-based Workflow Design"]
-  },
-  {
     label: "Cloud & DevOps",
     skills: ["AWS (EC2, S3, EKS)", "Docker", "Kubernetes", "Nginx", "GitHub Actions", "Jenkins", "CI/CD"]
   },
   {
     label: "Observability",
     skills: ["OpenTelemetry", "Prometheus", "Grafana", "Jaeger", "Loki"]
+  },
+  {
+    label: "Frontend",
+    skills: ["React.js", "Next.js", "JavaScript (ES6+)", "Tailwind CSS"]
   }
 ]
 
@@ -163,6 +163,7 @@ export type Project = {
 /** Hand-picked hero images for the few live-fetched projects worth a real
  *  cover instead of the generated placeholder. Keyed by slug. */
 export const manualCovers: Record<string, string> = {
+  "personal-growth-ai-os": "/projects/personal-growth-ai-os-1.png",
   "ai-notification-system":
     "https://res.cloudinary.com/dhexmnaxl/image/upload/v1786515486/ChatGPT_Image_Aug_12_2026_11_44_02_AM_hdggrp.png",
 }
