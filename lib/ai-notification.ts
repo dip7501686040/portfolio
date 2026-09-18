@@ -623,7 +623,7 @@ export const aiNotificationAssets = {
   // screenshot (the event-submit UI) rather than a generic placeholder.
   productPoster: "https://res.cloudinary.com/dhexmnaxl/image/upload/v1786456292/Event_Send_UI_ec8ggr.png",
   github: "https://github.com/dip7501686040/ai-notification-system",
-  liveDemo: "",
+  liveDemo: "https://ainotification.duckdns.org",
   eventFlowScreenshots: {
     eventSubmitted: "https://res.cloudinary.com/dhexmnaxl/image/upload/v1786456292/Event_Send_UI_ec8ggr.png",
     gatewayDispatch: "https://res.cloudinary.com/dhexmnaxl/image/upload/v1786456291/api-gateway_dispatch_createEvent_g7ptqf.png",
