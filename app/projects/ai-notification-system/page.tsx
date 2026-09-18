@@ -1,18 +1,39 @@
 import type { Metadata } from "next";
 import { caseStudyContent, aiNotificationAssets } from "@/lib/ai-notification";
+import type { ContentCard } from "@/lib/data";
+import { getPublicContentCards } from "@/lib/proof";
 import CaseStudyHero from "@/components/case-study/CaseStudyHero";
 import ProductDemo from "@/components/case-study/ProductDemo";
 import ArchitectureEventFlow from "@/components/case-study/ArchitectureEventFlow";
-import EngineeringEvidence from "@/components/case-study/EngineeringEvidence";
+import ContentGrid from "@/components/case-study/ContentGrid";
 import Footer from "@/components/Footer";
+
+// Re-check periodically — the Personal Growth app's /content page is the
+// real source of truth for this section; nothing here needs a portfolio
+// deploy when a new proof card is added.
+export const revalidate = 3600;
 
 export const metadata: Metadata = {
   title: "AI Notification System — Case Study",
   description: caseStudyContent.heroTagline
 };
 
-export default function AiNotificationSystemPage() {
+export default async function AiNotificationSystemPage() {
   const { github, liveDemo } = aiNotificationAssets;
+
+  const allCards = await getPublicContentCards();
+  const content: ContentCard[] = allCards
+    .filter((c) => c.projectSlug === "ai-notification-system")
+    .map((c) => ({
+      featureKey: c.featureSlug ?? c.id,
+      title: c.title,
+      kind: c.kind,
+      src: c.kind === "video" ? c.videoUrl ?? c.url : c.url,
+      poster: c.kind === "video" ? c.url : undefined,
+      caption: c.caption ?? "",
+      code: c.code,
+      role: c.role,
+    }));
 
   return (
     <main>
@@ -33,7 +54,7 @@ export default function AiNotificationSystemPage() {
 
       <ProductDemo />
       <ArchitectureEventFlow />
-      <EngineeringEvidence />
+      <ContentGrid content={content} />
 
       <Footer />
     </main>
